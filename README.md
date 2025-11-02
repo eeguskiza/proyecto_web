@@ -3,17 +3,45 @@
 Bienvenido a **Star Wars Site**. Este proyecto muestra información de personajes de Star Wars, sus especies, planetas y las películas en las que aparecen mediante una web interactiva creada por nosotros. 
 
 ## Estructura de datos
-- **Species** (`name`, `classification?`, `designation?`, `language?`)
-- **Planet** (`name`, `climate?`, `terrain?`, `population?`)
-- **Media** (`title`, `media_type` = `film|series`, `episode?`, `release_date?`, `chronology_order?`, `canonical`)
-- **Affiliation** (`name`, `category?`)
-- **Character**  
-  - Campos: `name`, `species→Species`, `homeworld→Planet`, `height_m?`, `mass_kg?`, `gender?`, `birth_year_bby_aby?`, `death_year_bby_aby?`, `eye_color?`, `hair_color?`, `skin_color?`, `cybernetics?`, `image_url?`, `wiki_url?`
-  - Relaciones:  
-    - N:M con **Media** a través de **Appearance**  
-    - N:M con **Affiliation** a través de **CharacterAffiliation**
-- **Appearance** (`character→Character`, `media→Media`, `credit_order?`, `role_name?`, `notes?`) — única por (character, media)
-- **CharacterAffiliation** (`character→Character`, `affiliation→Affiliation`, `since_year_bby_aby?`, `until_year_bby_aby?`, `notes?`) — única por (character, affiliation)
+**Entities principales del proyecto:**
+
+* **Species**
+  Contiene la información básica de cada especie.
+  **Campos:** `name`, `classification`, `designation`, `language`.
+
+* **Planet**
+  Representa los planetas del universo Star Wars.
+  **Campos:** `name`, `climate`, `terrain`, `population`.
+
+* **Media**
+  Registra películas o series en las que aparecen los personajes.
+  **Campos:** `title`, `media_type` (`film` o `series`), `episode`, `release_date`, `chronology_order`, `canonical`.
+
+* **Affiliation**
+  Define organizaciones, ejércitos o facciones a las que pertenecen los personajes.
+  **Campos:** `name`, `category`.
+
+* **Character**
+  Personajes de la saga, con sus atributos físicos y enlaces a otras entidades.
+  **Campos:**
+  `name`, `species`, `homeworld`, `height_m`, `mass_kg`, `gender`,
+  `birth_year_bby_aby`, `death_year_bby_aby`, `eye_color`, `hair_color`,
+  `skin_color`, `cybernetics`, `image_url`, `wiki_url`.
+  **Relaciones:**
+
+  * N:M con **Media** → a través de **Appearance**
+  * N:M con **Affiliation** → a través de **CharacterAffiliation**
+
+* **Appearance**
+  Tabla intermedia que enlaza personajes con películas o series.
+  **Campos:** `character`, `media`, `credit_order`, `role_name`, `notes`.
+  Única por `(character, media)`.
+
+* **CharacterAffiliation**
+  Tabla intermedia que vincula personajes con afiliaciones.
+  **Campos:** `character`, `affiliation`, `since_year_bby_aby`, `until_year_bby_aby`, `notes`.
+  Única por `(character, affiliation)`.
+  
 
 > Los datos utilizados han sido extraidos de: 
 > - Personajes, imágenes, especie, afiliaciones: **akabab/starwars-api** (`data/all.json`)  
@@ -55,7 +83,7 @@ source .venv/bin/activate  # Windows: .venv\Scripts\Activate.ps1
 ```bash
 pip install -r requirements.txt
 ````
-### 3) Migraciones``
+### 3) Migraciones
 ```bash
 python manage.py migrate
 ````
