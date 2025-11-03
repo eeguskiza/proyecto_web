@@ -9,7 +9,16 @@ class HomeView(TemplateView):
         featured = []
 
         for s in Species.objects.all():
-            tallest = Character.objects.filter(species=s).order_by("-height_m").first()
+            tallest = (
+                Character.objects
+                .filter(
+                    species=s,
+                    image_url__isnull=False  # que tenga campo de imagen
+                )
+                .exclude(image_url="")      # que no esté vacío
+                .order_by("-height_m")
+                .first()
+            )
             if tallest:
                 featured.append(tallest)
 

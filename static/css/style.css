@@ -1,4 +1,6 @@
-/* === Estilo general === */
+/* ============================= */
+/* ESTILO GENERAL DE LA PÁGINA */
+/* ============================= */
 body {
     font-family: 'Segoe UI', sans-serif;
     background: radial-gradient(circle at 50% 20%, #0a0a0f, #000);
@@ -7,18 +9,21 @@ body {
     text-align: center;
 }
 
-/* === Cabecera y navegación === */
+/* ============================= */
+/* CABECERA Y NAVEGACIÓN */
+/* ============================= */
 header {
-    background: rgba(10, 10, 15, 0.85);
+    background: rgba(10, 10, 15, 0.9);
     padding: 20px 0;
     border-bottom: 1px solid #222;
 }
 
 header h1 {
-    font-size: 2.2em;
+    font-size: 2.8em;
     margin-bottom: 10px;
-    color: #ffe81f; /* Amarillo Star Wars */
-    text-shadow: 0 0 10px #ffe81f55;
+    color: #ffe81f;
+    text-shadow: 0 0 15px #ffe81f55;
+    font-weight: bold;
 }
 
 nav a {
@@ -32,12 +37,62 @@ nav a:hover {
     color: #ffe81f;
 }
 
-/* === Sección principal === */
-main {
-    padding: 30px 20px;
+/* ============================= */
+/* SECCIÓN DE INTRODUCCIÓN */
+/* ============================= */
+.intro {
+    padding: 60px 20px 40px 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid #222;
+    line-height: 1.7em;
 }
 
-/* === Cuadrícula de personajes === */
+.intro h2 {
+    color: #ffe81f;
+    font-size: 2.2em;
+    margin-bottom: 20px;
+}
+
+/* ============================= */
+/* SECCIÓN DE DATOS GALÁCTICOS */
+/* ============================= */
+.stats {
+    padding: 50px 20px;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid #222;
+}
+
+.stats h2 {
+    color: #ffe81f;
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.stats-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.stats-list li {
+    color: #ccc;
+    font-size: 1.1em;
+    margin: 8px 0;
+}
+
+/* ============================= */
+/* SECCIÓN DE PERSONAJES DESTACADOS */
+/* ============================= */
+.featured {
+    padding: 50px 20px;
+}
+
+.featured h2 {
+    color: #ffe81f;
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
 .grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -76,7 +131,9 @@ main {
     font-size: 0.9em;
 }
 
-/* === Footer === */
+/* ============================= */
+/* PIE DE PÁGINA */
+/* ============================= */
 footer {
     margin-top: 40px;
     padding: 10px 0;
