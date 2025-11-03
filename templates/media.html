@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %}Star Wars – Películas{% endblock %}
+
+{% block content %}
+<h2>Películas</h2>
+
+{% if films %}
+<section class="media-section">
+    <div class="media-container">   
+        {% for film in films %}
+        <div class="media-card">
+            <h4>{{ film.title }}</h4>
+            <p><strong>Episodio:</strong> {{ film.episode }}</p>
+            <p><strong>Director:</strong> {{ film.director }}</p>
+            <p><strong>Productor:</strong> {{ film.producer }}</p>
+            <p><strong>Fecha de estreno:</strong> {{ film.release_date }}</p>
+            <p><strong>Sinopsis:</strong> {{ film.opening_crawl }}</p>
+
+            <details>
+                <summary>Más información</summary>
+                <p><strong>Planetas:</strong> {{ film.planets|join:", " }}</p>
+                <p><strong>Personajes:</strong> {{ film.characters|join:", " }}</p>
+                <p><strong>Naves:</strong> {{ film.starships|join:", " }}</p>
+                <p><strong>Vehículos:</strong> {{ film.vehicles|join:", " }}</p>
+                <p><strong>Especies:</strong> {{ film.species|join:", " }}</p>
+                <p><a href="{{ film.url }}" target="_blank">Ver en SWAPI</a></p>
+            </details>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% else %}
+<p>No hay películas disponibles en este momento.</p>
+{% endif %}
+{% endblock %}

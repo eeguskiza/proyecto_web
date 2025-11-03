@@ -33,6 +33,15 @@ class Media(models.Model):
     release_date = models.DateField(null=True, blank=True)
     chronology_order = models.IntegerField(null=True, blank=True)
     canonical = models.BooleanField(default=True)
+    director = models.CharField(max_length=100, null=True, blank=True)
+    producer = models.CharField(max_length=200, null=True, blank=True)
+    opening_crawl = models.TextField(null=True, blank=True)
+    url = models.URLField(null=True, blank=True)
+    characters = models.JSONField(null=True, blank=True)
+    planets = models.JSONField(null=True, blank=True)
+    starships = models.JSONField(null=True, blank=True)
+    vehicles = models.JSONField(null=True, blank=True)
+    species = models.JSONField(null=True, blank=True)   
 
     class Meta:
         ordering = ["media_type", "episode", "release_date", "title"]

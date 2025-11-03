@@ -60,9 +60,17 @@ class Command(BaseCommand):
                 title=title,
                 defaults={
                     "media_type": Media.FILM,
-                    "episode": episode,
-                    "release_date": rdate,
-                    "canonical": True,
+                    "episode": f.get("episode_id"),
+                    "release_date": f.get("release_date"),
+                    "director": f.get("director"),
+                    "producer": f.get("producer"),
+                    "opening_crawl": f.get("opening_crawl"),
+                    "url": f.get("url"),
+                    "characters": f.get("characters"),
+                    "planets": f.get("planets"),
+                    "starships": f.get("starships"),
+                    "vehicles": f.get("vehicles"),
+                    "species": f.get("species"),
                 },
             )
             film_by_url[f["url"]] = media

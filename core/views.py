@@ -1,6 +1,8 @@
 from django.views.generic import TemplateView
 from django.shortcuts import render
-from .models import Species, Character
+from .models import Species, Character, Media
+from .utils import resolve_swapi_names
+
 class HomeView(TemplateView):
     template_name = "home.html"
 
@@ -24,6 +26,18 @@ class HomeView(TemplateView):
 
         context["featured_characters"] = featured
         return context
+    
+def media_view(request):
+    films = Media.objects.filter(media_type=Media.FILM)
+
+    for film in films:
+        film.planets = resolve_swapi_names(film.planets)
+        film.characters = resolve_swapi_names(film.characters)
+        film.starships = resolve_swapi_names(film.starships)
+        film.vehicles = resolve_swapi_names(film.vehicles)
+        film.species = resolve_swapi_names(film.species)
+
+    return render(request, "media.html", {"films": films})
 
 
 def handler_404(request, exception, template_name="404.html"):
