@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Inicio – Star Wars{% endblock %}
+
+{% block content %}
+<h2>Personajes destacados por especie</h2>
+<p>Explora un personaje representativo de cada especie conocida de la galaxia.</p>
+
+<div class="grid">
+  {% for c in featured_characters %}
+    <div class="card">
+      <img src="{{ c.image_url }}" alt="{{ c.name }}" style="width:150px;border-radius:8px;">
+      <h3>{{ c.name }}</h3>
+      <p><strong>Especie:</strong> {{ c.species.name }}</p>
+      <small>{{ c.height_m }} m</small>
+    </div>
+  {% empty %}
+    <p>No hay personajes disponibles.</p>
+  {% endfor %}
+</div>
+{% endblock %}

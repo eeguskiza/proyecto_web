@@ -16,15 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from django.http import HttpResponse
-
-def alive(_): return HttpResponse("Star Wars – OK")
+from core.views import HomeView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", alive, name="home"),
+    path("", HomeView.as_view(), name="home"),
 ]
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
-]
+handler404 = "core.views.handler_404"
+handler500 = "core.views.handler_500"
