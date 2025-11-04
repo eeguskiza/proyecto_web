@@ -1,0 +1,127 @@
+/* ============================= */
+/* ESTILO PARA LA SECCIÓN DE PELÍCULAS */
+/* ============================= */
+
+.media-section {
+    padding: 60px 20px;
+    background: radial-gradient(circle at 50% 20%, #0c0c15, #000);
+    border-top: 1px solid #222;
+}
+
+.media-section h2 {
+    color: #ffe81f;
+    font-size: 2.2em;
+    margin-bottom: 40px;
+    text-shadow: 0 0 10px #ffe81f55;
+}
+
+/* ============================= */
+/* CONTENEDOR DE LAS TARJETAS */
+/* ============================= */
+.media-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    justify-content: center;
+}
+
+/* ============================= */
+/* TARJETAS DE PELÍCULA */
+/* ============================= */
+.media-card {
+    background: rgba(17, 17, 17, 0.95);
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 0 10px #000;
+    text-align: left;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.media-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 0 15px #ffe81f55;
+}
+
+/* ============================= */
+/* TEXTOS DENTRO DE LAS TARJETAS */
+/* ============================= */
+.media-card h4 {
+    color: #ffe81f;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.media-card p {
+    color: #ccc;
+    font-size: 0.95em;
+    margin: 6px 0;
+}
+
+.media-card strong {
+    color: #61dafb;
+}
+
+/* ============================= */
+/* DETALLES (acordeón de info extra) */
+/* ============================= */
+details {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    margin-top: 15px;
+    padding: 10px;
+    border: 1px solid #222;
+}
+
+details summary {
+    color: #ffe81f;
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 5px;
+    transition: color 0.3s ease;
+}
+
+details summary:hover {
+    color: #61dafb;
+}
+
+details p {
+    margin: 5px 0;
+    color: #ccc;
+    font-size: 0.9em;
+}
+
+/* ============================= */
+/* ENLACE A SWAPI */
+/* ============================= */
+.media-card a {
+    color: #61dafb;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.media-card a:hover {
+    color: #ffe81f;
+    text-decoration: underline;
+}
+
+/* ============================= */
+/* MENSAJE SI NO HAY PELÍCULAS */
+/* ============================= */
+.media-section p {
+    color: #ccc;
+    font-size: 1.1em;
+    margin-top: 20px;
+}
+
+/* ============================= */
+/* AJUSTES RESPONSIVE */
+/* ============================= */
+@media (max-width: 600px) {
+    .media-card {
+        padding: 15px;
+    }
+    .media-card h4 {
+        font-size: 1.3em;
+    }
+}

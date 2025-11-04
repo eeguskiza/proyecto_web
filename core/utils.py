@@ -8,7 +8,7 @@ def resolve_swapi_names(urls):
     names = []
     for url in urls:
         try:
-            response = requests.get(url, timeout=3)  # ⏱ timeout de 3 segundos
+            response = requests.get(url, timeout=3)  #timeout de 3 segundos por si no carga
             if response.status_code == 200:
                 data = response.json()
                 name = data.get("name") or data.get("title")
