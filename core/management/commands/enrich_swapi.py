@@ -21,6 +21,8 @@ from core.models import Character, Media, Appearance, Planet
 
 SWAPI = "https://swapi.py4e.com/api"
 
+# ---------- Helpers ----------
+
 def get_all(url):
     """Descarga paginando results de SWAPI."""
     out, nxt = [], url
@@ -32,6 +34,7 @@ def get_all(url):
         nxt = j.get("next")
     return out
 
+
 def to_date(s):
     """Convierte '1977-05-25' a date; si no puede, None."""
     if not s:
@@ -40,6 +43,35 @@ def to_date(s):
         return datetime.strptime(s, "%Y-%m-%d").date()
     except Exception:
         return None
+
+
+def get_name_from_url(url):
+    """Dada una URL de SWAPI, devuelve su 'name' o 'title'."""
+    if not url:
+        return None
+    try:
+        r = requests.get(url, timeout=10)
+        if r.status_code == 200:
+            data = r.json()
+            return data.get("name") or data.get("title")
+    except Exception:
+        pass
+    return None
+
+
+def resolve_names(url_list):
+    """Convierte una lista de URLs SWAPI en una lista de nombres."""
+    if not url_list:
+        return []
+    names = []
+    for u in url_list:
+        name = get_name_from_url(u)
+        if name:
+            names.append(name)
+    return names
+
+
+# ---------- Comando principal ----------
 
 class Command(BaseCommand):
     help = "Enriquece con films (Media) y apariciones (Appearance) desde SWAPI."
@@ -56,23 +88,31 @@ class Command(BaseCommand):
             episode = f.get("episode_id")
             rdate = to_date(f.get("release_date"))
 
+            # Resolver nombres (solo una vez)
+            planets = resolve_names(f.get("planets"))
+            characters = resolve_names(f.get("characters"))
+            starships = resolve_names(f.get("starships"))
+            vehicles = resolve_names(f.get("vehicles"))
+            species = resolve_names(f.get("species"))
+
             media, new = Media.objects.update_or_create(
                 title=title,
                 defaults={
                     "media_type": Media.FILM,
-                    "episode": f.get("episode_id"),
+                    "episode": episode,
                     "release_date": f.get("release_date"),
                     "director": f.get("director"),
                     "producer": f.get("producer"),
                     "opening_crawl": f.get("opening_crawl"),
                     "url": f.get("url"),
-                    "characters": f.get("characters"),
-                    "planets": f.get("planets"),
-                    "starships": f.get("starships"),
-                    "vehicles": f.get("vehicles"),
-                    "species": f.get("species"),
+                    "characters": characters,
+                    "planets": planets,
+                    "starships": starships,
+                    "vehicles": vehicles,
+                    "species": species,
                 },
             )
+
             film_by_url[f["url"]] = media
             created_m += 1 if new else 0
             updated_m += 0 if new else 1
@@ -107,6 +147,7 @@ class Command(BaseCommand):
             f"Media films created {created_m}, updated {updated_m} | Links Character-Film +{linked} | People sin match {missing}"
         ))
 
+
     # -------- helpers --------
 
     def _maybe_enrich_planet(self, person_obj, ch_instance=None):
@@ -119,7 +160,8 @@ class Command(BaseCommand):
         if not hw_url or not isinstance(hw_url, str):
             return
         try:
-            r = requests.get(hw_url, timeout=30); r.raise_for_status()
+            r = requests.get(hw_url, timeout=30)
+            r.raise_for_status()
             pj = r.json()
             pname = pj.get("name")
             if not pname:
