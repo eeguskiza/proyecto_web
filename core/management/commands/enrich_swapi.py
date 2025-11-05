@@ -21,10 +21,13 @@ from core.models import Character, Media, Appearance, Planet
 
 SWAPI = "https://swapi.py4e.com/api"
 
+# ---------- CACHÉ GLOBAL ----------
+_SWAPI_CACHE = {}
+
 # ---------- Helpers ----------
 
 def get_all(url):
-    """Descarga paginando results de SWAPI."""
+    """Descarga paginando todos los resultados de SWAPI."""
     out, nxt = [], url
     while nxt:
         r = requests.get(nxt, timeout=30)
@@ -46,21 +49,27 @@ def to_date(s):
 
 
 def get_name_from_url(url):
-    """Dada una URL de SWAPI, devuelve su 'name' o 'title'."""
+    """Dada una URL de SWAPI, devuelve su 'name' o 'title', con caché."""
     if not url:
         return None
+    if url in _SWAPI_CACHE:
+        return _SWAPI_CACHE[url]
+
     try:
         r = requests.get(url, timeout=10)
         if r.status_code == 200:
             data = r.json()
-            return data.get("name") or data.get("title")
+            name = data.get("name") or data.get("title")
+            _SWAPI_CACHE[url] = name
+            return name
     except Exception:
         pass
+
     return None
 
 
 def resolve_names(url_list):
-    """Convierte una lista de URLs SWAPI en una lista de nombres."""
+    """Convierte una lista de URLs SWAPI en una lista de nombres legibles."""
     if not url_list:
         return []
     names = []
@@ -78,7 +87,8 @@ class Command(BaseCommand):
 
     @transaction.atomic
     def handle(self, *args, **opts):
-        # 1) Films
+        # 1) Descargar y crear/actualizar Films
+        self.stdout.write("→ Descargando films desde SWAPI...")
         films = get_all(f"{SWAPI}/films/")
         created_m = updated_m = 0
         film_by_url = {}
@@ -88,7 +98,7 @@ class Command(BaseCommand):
             episode = f.get("episode_id")
             rdate = to_date(f.get("release_date"))
 
-            # Resolver nombres (solo una vez)
+            # Resolver nombres antes de guardar
             planets = resolve_names(f.get("planets"))
             characters = resolve_names(f.get("characters"))
             starships = resolve_names(f.get("starships"))
@@ -117,22 +127,22 @@ class Command(BaseCommand):
             created_m += 1 if new else 0
             updated_m += 0 if new else 1
 
-        # 2) People -> Character + Appearance
+        # 2) Enlazar personajes con películas
+        self.stdout.write("→ Descargando personajes y enlazando con películas...")
         people = get_all(f"{SWAPI}/people/")
         linked = missing = 0
+
         for p in people:
             name = p.get("name")
-            # Character por nombre exacto
             try:
                 ch = Character.objects.get(name=name)
             except Character.DoesNotExist:
                 missing += 1
                 self.stdout.write(f"[WARN] Character no encontrado por nombre: {name}")
-                # Completar planeta si coincide, aunque no tengamos personaje
                 self._maybe_enrich_planet(p)
                 continue
 
-            # Apariciones
+            # Crear relaciones de aparición
             for furl in p.get("films", []):
                 media = film_by_url.get(furl)
                 if not media:
@@ -140,16 +150,16 @@ class Command(BaseCommand):
                 Appearance.objects.get_or_create(character=ch, media=media)
                 linked += 1
 
-            # Enriquecer planeta del personaje si hay match por nombre
+            # Enriquecer planeta
             self._maybe_enrich_planet(p, ch)
 
         self.stdout.write(self.style.SUCCESS(
-            f"Media films created {created_m}, updated {updated_m} | Links Character-Film +{linked} | People sin match {missing}"
+            f"✅ Media films created {created_m}, updated {updated_m} | "
+            f"Links Character-Film +{linked} | People sin match {missing}"
         ))
 
 
-    # -------- helpers --------
-
+    # ---------- Helper interno ----------
     def _maybe_enrich_planet(self, person_obj, ch_instance=None):
         """
         Si SWAPI trae homeworld como URL, descarga el planeta y actualiza:
@@ -169,9 +179,8 @@ class Command(BaseCommand):
             try:
                 pl = Planet.objects.get(name=pname)
             except Planet.DoesNotExist:
-                # si no existe, no lo creamos aquí; mantenemos el flujo simple
                 return
-            # actualizar metadatos si están vacíos
+
             changed = False
             if not pl.climate and pj.get("climate"):
                 pl.climate = pj["climate"]; changed = True
@@ -181,10 +190,9 @@ class Command(BaseCommand):
                 pl.population = int(pj["population"]); changed = True
             if changed:
                 pl.save()
-            # asociar FK al personaje si vino por SWAPI y no estaba
+
             if ch_instance and ch_instance.homeworld is None:
                 ch_instance.homeworld = pl
                 ch_instance.save(update_fields=["homeworld"])
         except Exception:
-            # silenciar errores remotos de SWAPI en esta fase
             return
