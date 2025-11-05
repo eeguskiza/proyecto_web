@@ -1,0 +1,56 @@
+/* Contenedor central */
+.detalle-container-sw {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* Tarjeta del personaje */
+.personaje-card {
+    background: rgba(20, 20, 25, 0.95);
+    border: 2px solid #ffe81f; /* borde amarillo Star Wars */
+    border-radius: 12px;
+    padding: 20px;
+    max-width: 400px;  /* tamaño compacto */
+    color: #f0f0f0;
+    box-shadow: 0 0 15px #000;
+    display: flex;
+    gap: 20px; /* espacio entre imagen y info */
+}
+
+/* Imagen del personaje */
+.personaje-card img {
+    width: 100px;   /* tamaño fijo */
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover; /* recorta si es más grande */
+    border: 2px solid #ffe81f;
+}
+
+/* Información del personaje */
+.personaje-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+}
+
+.personaje-info h1 {
+    font-size: 1.5em;
+    color: #ffe81f;
+    margin: 0 0 10px 0;
+}
+
+.personaje-info p {
+    margin: 2px 0;
+}
+
+.personaje-info a {
+    color: #61dafb;
+    text-decoration: none;
+}
+
+.personaje-info a:hover {
+    color: #ffe81f;
+}

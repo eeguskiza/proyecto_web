@@ -1,7 +1,7 @@
 from django.views.generic import TemplateView
-from django.shortcuts import render
 from .models import Species, Character, Media
 from .utils import resolve_swapi_names
+from django.shortcuts import render, get_object_or_404
 
 class HomeView(TemplateView):
     template_name = "home.html"
@@ -45,3 +45,18 @@ def handler_404(request, exception, template_name="404.html"):
 
 def handler_500(request, template_name="500.html"):
     return render(request, template_name, status=500)
+
+def detalle_personaje(request, personaje_id):
+    personaje = get_object_or_404(Character, id=personaje_id)
+    return render(request, 'detalle_personajes.html', {'personaje': personaje})
+
+def index_personajes(request):
+    especie_id = request.GET.get("especie")
+    personajes = Character.objects.select_related("species").all()
+    if especie_id:
+        personajes = personajes.filter(species_id=especie_id)
+    especies = Species.objects.all()
+    return render(request, "index_personajes.html", {
+        "personajes": personajes,
+        "especies": especies,
+    })

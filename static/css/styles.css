@@ -1,0 +1,169 @@
+/* === Estilo general === */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at 50% 20%, #0a0a0f, #000);
+    color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+/* === Header y navegación === */
+header {
+    width: 100%;
+    background-color: #111;
+    color: #ffe81f;
+    padding: 15px 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.8em;
+    text-align: center;
+}
+
+header nav {
+    margin-top: 10px;
+}
+
+header nav a {
+    color: #61dafb;
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: bold;
+}
+
+header nav a:hover {
+    color: #ffe81f;
+}
+
+/* === Contenedor principal === */
+.container {
+    display: flex;
+    width: 90%;
+    max-width: 1400px;
+    margin: 40px auto;
+    gap: 30px;
+}
+
+/* === Tabla de personajes compacta === */
+.tabla-wrapper {
+    flex: 1;
+}
+
+.tabla-personajes {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(20, 20, 25, 0.95);
+    border: 1px solid #333;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 10px #000;
+    table-layout: auto;
+    font-size: 0.9em;
+}
+
+.tabla-personajes th, .tabla-personajes td {
+    padding: 6px 10px;
+    text-align: left;
+    border-bottom: 1px solid #222;
+    vertical-align: middle;
+}
+
+.tabla-personajes th {
+    background: #111;
+    color: #ffe81f;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.85em;
+}
+
+/* 🔹 Foto miniatura */
+.tabla-personajes img {
+    width: 35px;      /* tamaño miniatura */
+    height: 35px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid #444;
+}
+
+/* Centrado de la celda de foto */
+.foto-cell {
+    text-align: center;
+    width: 50px;
+}
+
+/* Hover más sutil */
+.tabla-personajes tr:hover {
+    background-color: rgba(255, 232, 31, 0.05);
+    transition: background 0.3s ease;
+}
+
+/* === Sidebar de especies === */
+.sidebar {
+    width: 250px;
+    background: rgba(15, 15, 20, 0.95);
+    border: 1px solid #333;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 15px #000;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    height: fit-content;
+}
+
+.sidebar h2 {
+    color: #ffe81f;
+    text-align: center;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+}
+
+.species-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.species-list button {
+    background: #111;
+    color: #61dafb;
+    border: 1px solid #333;
+    padding: 10px;
+    border-radius: 6px;
+    font-size: 0.95em;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.3s ease;
+}
+
+.species-list button:hover {
+    background: #ffe81f;
+    color: #000;
+    box-shadow: 0 0 10px #ffe81f66;
+}
+
+/* === Título principal === */
+h1 {
+    color: #ffe81f;
+    text-shadow: 0 0 10px #ffe81f55;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* === Footer === */
+footer {
+    margin-top: 40px;
+    padding: 10px 0;
+    border-top: 1px solid #222;
+    color: #777;
+    font-size: 0.9em;
+    text-align: center;
+}

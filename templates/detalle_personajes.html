@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ personaje.name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/style_Detalle.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="detalle-container-sw">
+
+    <div class="personaje-card">
+        <!-- Imagen del personaje -->
+        <img src="{{ personaje.image_url }}" alt="{{ personaje.name }}">
+
+        <!-- Información -->
+        <div class="personaje-info">
+            <h1>{{ personaje.name }}</h1>
+            <p><strong>Especie:</strong> {{ personaje.species.name|default:"Desconocida" }}</p>
+            <p><strong>Planeta natal:</strong> {{ personaje.homeworld.name|default:"Desconocido" }}</p>
+            <p><strong>Género:</strong> {{ personaje.gender }}</p>
+            <p><strong>Altura:</strong> {{ personaje.height_m }} m</p>
+            <p><strong>Peso:</strong> {{ personaje.mass_kg }} kg</p>
+            <p>
+              <strong>
+                {% if personaje.species.name == "droid" %}
+                  Año de construcción:
+                {% else %}
+                  Nacimiento:
+                {% endif %}
+              </strong>
+              {{ personaje.birth_year_bby_aby|default:"Desconocido" }}
+            </p>
+            {% if personaje.cybernetics %}
+            <p><strong>Cibernética:</strong> {{ personaje.cybernetics }}</p>
+            {% endif %}
+            <p><a href="{{ personaje.wiki_url }}" target="_blank">Ver en Wookieepedia</a></p>
+            <a href="{% url 'index_personajes' %}">← Volver</a>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

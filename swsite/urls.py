@@ -21,6 +21,7 @@ from core.views import HomeView
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("core.urls")),
+    path("", HomeView.as_view(), name="home"),
 ]
 handler404 = "core.views.handler_404"
 handler500 = "core.views.handler_500"

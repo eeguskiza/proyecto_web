@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Personajes{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <!-- Tabla de personajes -->
+    <div class="tabla-wrapper">
+        <h1>Personajes de Star Wars</h1>
+        <table class="tabla-personajes">
+            <thead>
+                <tr>
+                    <th>Foto</th>
+                    <th>Nombre</th>
+                    <th>Especie</th>
+                    <th>Planeta natal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for personaje in personajes %}
+                <tr>
+                    <td class="foto-cell">
+                        <a href="{% url 'detalle_personaje' personaje.id %}">
+                            <img src="{{ personaje.image_url }}" alt="{{ personaje.name }}">
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{% url 'detalle_personaje' personaje.id %}">{{ personaje.name }}</a>
+                    </td>
+                    <td>{{ personaje.species.name|default:"Desconocido" }}</td>
+                    <td>{{ personaje.homeworld.name|default:"Desconocido" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Sidebar de especies -->
+    <aside class="sidebar">
+        <h2>Especies</h2>
+        <div class="species-list">
+            {% for especie in especies %}
+                <form method="get" action="{% url 'index_personajes' %}">
+                    <input type="hidden" name="especie" value="{{ especie.id }}">
+                    <button type="submit">{{ especie.name }}</button>
+                </form>
+            {% endfor %}
+        </div>
+    </aside>
+
+</div>
+{% endblock %}
