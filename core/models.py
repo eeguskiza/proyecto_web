@@ -10,13 +10,67 @@ class Species(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Region(models.Model):
+    name = models.CharField(max_length=100, unique=True)
 
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+
+
+class Sector(models.Model):
+    name = models.CharField(max_length=120, unique=True)
+    region = models.ForeignKey(
+        Region, null=True, blank=True, on_delete=models.SET_NULL, related_name="sectors"
+    )
+
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+
+
+class PlanetSpecies(models.Model):
+    planet = models.ForeignKey("Planet", on_delete=models.CASCADE)
+    species = models.ForeignKey("Species", on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = [("planet", "species")]
+        indexes = [
+            models.Index(fields=["planet", "species"]),
+        ]
+    
+class StarSystem(models.Model):
+    name = models.CharField(max_length=120, unique=True)
+    sector = models.ForeignKey(
+        Sector, null=True, blank=True, on_delete=models.SET_NULL, related_name="systems"
+    )
+
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
 
 class Planet(models.Model):
     name = models.CharField(max_length=100, unique=True)
     climate = models.CharField(max_length=120, null=True, blank=True)
     terrain = models.CharField(max_length=120, null=True, blank=True)
     population = models.BigIntegerField(null=True, blank=True)
+
+    star_system = models.ForeignKey(
+        StarSystem, null=True, blank=True, on_delete=models.SET_NULL, related_name="planets")
+    capital_city = models.CharField(max_length=120, null=True, blank=True)
+    grid_coordinates = models.CharField(max_length=20, null=True, blank=True)
+
+    native_species = models.ManyToManyField(
+    "Species", through="PlanetSpecies", related_name="homeworlds", blank=True
+    )
+
 
     def __str__(self):
         return self.name
