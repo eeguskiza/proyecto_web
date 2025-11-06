@@ -87,8 +87,8 @@ header nav a:hover {
 
 /* 🔹 Foto miniatura — forzamos prioridad */
 .tabla-personajes .foto-cell img {
-    width: 40px !important;
-    height: 40px !important;
+    width: 50px !important;
+    height: 50px !important;
     object-fit: cover;
     border-radius: 6px;
     border: 1px solid #444;
