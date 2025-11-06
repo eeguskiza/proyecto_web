@@ -19,7 +19,6 @@
                     <th>Foto</th>
                     <th>Nombre</th>
                     <th>Especie</th>
-                    <th>Planeta natal</th>
                 </tr>
             </thead>
             <tbody>
@@ -34,7 +33,6 @@
                         <a href="{% url 'detalle_personaje' personaje.id %}">{{ personaje.name }}</a>
                     </td>
                     <td>{{ personaje.species.name|default:"Desconocido" }}</td>
-                    <td>{{ personaje.homeworld.name|default:"Desconocido" }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
