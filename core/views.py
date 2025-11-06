@@ -5,6 +5,8 @@ from django.shortcuts import render, get_object_or_404
 import requests
 from django.shortcuts import render
 from core.models import Media
+from .models import Planet
+from django.shortcuts import render
 
 # Caché en memoria (evita repetir peticiones a la misma URL)
 SWAPI_CACHE = {}
@@ -58,3 +60,50 @@ def index_personajes(request):
         "personajes": personajes,
         "especies": especies,
     })
+def planets_view(request):
+    planets = Planet.objects.select_related("star_system").all().order_by("name")
+
+    bad_values = {"unknown", "desconocido", "none", "n/a", "null", "0", ""}
+    
+    def imperial_phrase(field):
+        phrases = {
+            "climate": "Condición atmosférica clasificada.",
+            "terrain": "Superficie bajo censura imperial.",
+            "population": "Cifras eliminadas del registro.",
+            "capital_city": "Localidad no reconocida por el Imperio.",
+            "grid_coordinates": "Sistema fuera del alcance imperial.",
+            "star_system": "Sector no autorizado.",
+        }
+        return phrases.get(field, "Archivo incompleto.")
+
+    clean_planets = []
+    for p in planets:
+        # Campos normalizados
+        fields = {
+            "climate": str(p.climate or "").strip().lower(),
+            "terrain": str(p.terrain or "").strip().lower(),
+            "population": str(p.population or "").strip().lower(),
+            "capital_city": str(p.capital_city or "").strip().lower(),
+            "grid_coordinates": str(p.grid_coordinates or "").strip().lower(),
+        }
+
+        # Contamos campos válidos
+        valid_count = sum(1 for v in fields.values() if v not in bad_values)
+
+        # Creamos versiones “display” con frases imperiales
+        p.display_climate = p.climate if fields["climate"] not in bad_values else imperial_phrase("climate")
+        p.display_terrain = p.terrain if fields["terrain"] not in bad_values else imperial_phrase("terrain")
+        p.display_population = p.population if fields["population"] not in bad_values else imperial_phrase("population")
+        p.display_capital = p.capital_city if fields["capital_city"] not in bad_values else imperial_phrase("capital_city")
+        p.display_grid = p.grid_coordinates if fields["grid_coordinates"] not in bad_values else imperial_phrase("grid_coordinates")
+        p.display_system = getattr(p.star_system, "name", imperial_phrase("star_system"))
+
+        # Guardamos número de campos válidos (para ordenar después)
+        p.valid_fields = valid_count
+
+        clean_planets.append(p)
+
+    # 🔹 Ordenar de más completos a menos
+    clean_planets.sort(key=lambda x: x.valid_fields, reverse=True)
+
+    return render(request, "planets.html", {"planets": clean_planets})

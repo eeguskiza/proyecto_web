@@ -1,0 +1,38 @@
+.planet-section {
+    padding: 40px 8%;
+    background-color: #0f0f0f;
+    color: #fff;
+    min-height: 100vh;
+}
+
+.planet-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.planet-card {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 1.2rem;
+    transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+.planet-card:hover {
+    transform: translateY(-5px);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.planet-card h4 {
+    font-size: 1.3rem;
+    margin-bottom: 0.6rem;
+    color: #ffcc00;
+}
+
+.planet-card p {
+    font-size: 0.95rem;
+    line-height: 1.4;
+    margin: 0.3rem 0;
+}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Star Wars - Planetas{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/planets.css' %}">
+
+<h2>Planetas</h2>
+
+{% if planets %}
+<section class="planet-section">
+    <div class="planet-container">
+        {% for planet in planets %}
+            <div class="planet-card">
+                <h4>{{ planet.name }}</h4>
+                <p><strong>Clima:</strong> {{ planet.display_climate }}</p>
+                <p><strong>Terreno:</strong> {{ planet.display_terrain }}</p>
+                <p><strong>Población:</strong> {{ planet.display_population }}</p>
+                <p><strong>Sistema estelar:</strong> {{ planet.display_system }}</p>
+                <p><strong>Capital:</strong> {{ planet.display_capital }}</p>
+                <p><strong>Coordenadas:</strong> {{ planet.display_grid }}</p>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% else %}
+<p>No hay planetas disponibles en este momento.</p>
+{% endif %}
+{% endblock %}
