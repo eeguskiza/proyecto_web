@@ -1,8 +1,11 @@
-{% extends 'base.html' %}
+{% extends 'index.html' %}
 {% load static %}
 {% block title %}Star Wars - Películas{% endblock %}
-{% block content %}
+{% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/media.css' %}">
+{% endblock %}
+
+{% block content %}
 <h2>Películas</h2>
 
 {% if films %}

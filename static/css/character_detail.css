@@ -1,4 +1,4 @@
-/* Contenedor central */
+/* ====== Detalle de personaje ====== */
 .detalle-container-sw {
     display: flex;
     justify-content: center;
@@ -6,40 +6,36 @@
     font-family: 'Segoe UI', sans-serif;
 }
 
-/* Tarjeta del personaje */
 .personaje-card {
     background: rgba(20, 20, 25, 0.95);
-    border: 2px solid #ffe81f; /* borde amarillo Star Wars */
-    border-radius: 12px;
-    padding: 20px;
-    max-width: 400px;  /* tamaño compacto */
+    border: 2px solid #ffe81f;
+    border-radius: 14px;
+    padding: 28px;
+    max-width: 420px;
     color: #f0f0f0;
-    box-shadow: 0 0 15px #000;
+    box-shadow: 0 0 18px rgba(0, 0, 0, 0.65);
     display: flex;
-    gap: 20px; /* espacio entre imagen y info */
+    gap: 22px;
 }
 
-/* Imagen del personaje */
 .personaje-card img {
-    width: 100px;   /* tamaño fijo */
-    height: 100px;
+    width: 110px;
+    height: 110px;
     border-radius: 50%;
-    object-fit: cover; /* recorta si es más grande */
+    object-fit: cover;
     border: 2px solid #ffe81f;
 }
 
-/* Información del personaje */
 .personaje-info {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 5px;
+    gap: 6px;
 }
 
 .personaje-info h1 {
-    font-size: 1.5em;
+    font-size: 1.6rem;
     color: #ffe81f;
-    margin: 0 0 10px 0;
+    margin: 0 0 10px;
 }
 
 .personaje-info p {
@@ -49,8 +45,17 @@
 .personaje-info a {
     color: #61dafb;
     text-decoration: none;
+    font-weight: 600;
 }
 
 .personaje-info a:hover {
     color: #ffe81f;
+}
+
+@media (max-width: 640px) {
+    .personaje-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
 }

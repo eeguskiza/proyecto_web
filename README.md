@@ -53,17 +53,36 @@ Bienvenido a **Star Wars Site**. Este proyecto muestra información de personaje
 proyecto_web/
 ├── core/                      # app principal
 │   ├── management/commands/
-│   │   ├── load_data.py       # carga akabab (local)
-│   │   └── enrich_swapi.py    # añade películas + apariciones desde SWAPI
+│   │   └── load_data.py       # comando unificado (akabab + planetas + SWAPI)
 │   ├── migrations/
 │   ├── admin.py
 │   ├── models.py
-│   └── views.py               # (se añadirá en la siguiente fase)
+│   └── views.py
 ├── swsite/                    # settings y urls del proyecto
 ├── data/
-│   └── all.json               # snapshot del dataset de akabab
-├── templates/                 # (se añadirá en la siguiente fase)
-├── static/                    # (css/imágenes locales opcionales)
+│   ├── all.json               # snapshot del dataset de akabab
+│   └── sw_planets.csv         # catálogo extendido de planetas
+├── templates/
+│   ├── index.html             # layout base
+│   ├── home.html
+│   ├── characters/
+│   │   ├── list.html
+│   │   └── detail.html
+│   ├── media/
+│   │   └── list.html
+│   ├── planets/
+│   │   └── list.html
+│   └── errors/
+│       ├── 404.html
+│       └── 500.html
+├── static/
+│   └── css/
+│       ├── base.css
+│       ├── home.css
+│       ├── characters.css
+│       ├── character_detail.css
+│       ├── media.css
+│       └── planets.css
 ├── manage.py
 └── requirements.txt
 
@@ -91,15 +110,11 @@ python manage.py migrate
 ```bash
 python manage.py createsuperuser
 ````
-### 5) Cargar datos
+### 5) Cargar y enriquecer datos
 ```bash
 python manage.py load_data
 ````
-### 6) Enriquecer con películas y apariciones
-```bash
-python manage.py enrich_swapi
-````
-### 7) Levantar servidor
+### 6) Levantar servidor
 ```bash
 python manage.py runserver
 ````
@@ -110,19 +125,17 @@ Acceso al admin: `http://127.0.0.1:8000/admin`
 ## 🧰 Comandos de datos
 
 * `python manage.py load_data`
-  Lee `data/all.json` y crea/actualiza Species, Planet, Affiliation, Character.
-  *Idempotente* (upsert por nombre).
-* `python manage.py enrich_swapi`
-  Descarga films de SWAPI y crea **Media** (`film`) + vínculos **Appearance** (Character↔Media).
-  Completa metadatos de planetas cuando hay coincidencia por nombre.
+  Ejecuta en cascada las tres etapas (akabab, CSV de planetas y SWAPI).  
+  El comando es idempotente y admite `--skip-akabab`, `--skip-planets` y `--skip-swapi`
+  para omitir fases concretas si ya están cargadas.
 
 ## Notas
 
 * Las imágenes **no se descargan**: se usan las URLs remotas de akabab (`image_url`).
 * Si SWAPI difiere en algún nombre y no enlaza, el comando lo avisa en consola.
+* La tercera etapa (`load_data` sin `--skip-swapi`) requiere conexión a Internet para consultar el mirror de SWAPI.
 
 ## Créditos
 
 * Datos: [akabab/starwars-api](https://github.com/akabab/starwars-api) y [SWAPI](https://swapi.py4e.com/)
 * Autores: **Erik Eguskiza**, **Alexander Jauregui**, **Jon Velasco** y **Alex Ribera**
-

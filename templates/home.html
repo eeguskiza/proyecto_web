@@ -1,5 +1,11 @@
-{% extends "base.html" %}
+{% extends "index.html" %}
+{% load static %}
+
 {% block title %}Inicio – Star Wars Site{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
 
 {% block content %}
 
@@ -7,7 +13,6 @@
 <!-- SECCIÓN DE INTRODUCCIÓN -->
 <!-- ============================= -->
 <section class="intro">
-  <h2>Star Wars Site</h2>
   <p>
     Bienvenido a <strong>Star Wars Site</strong>, una aplicación web desarrollada con la intención
     de explorar el universo de Star Wars de forma interactiva y visual.
@@ -17,7 +22,7 @@
     los planetas donde viven y las producciones en las que aparecen.
   </p>
   <p>
-    Este proyecto organiza y relaciona los datos entre personajes, especies, planetas y películas para mostrar
+    Nuestros datos estan organizados y relacionados los datos entre personajes, especies, planetas y películas para mostrar
     cómo una base de datos bien estructurada puede transformar la información en conocimiento útil.
   </p>
 </section>

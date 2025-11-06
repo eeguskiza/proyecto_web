@@ -1,0 +1,83 @@
+/* ====== Estilos base compartidos ====== */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: radial-gradient(circle at 50% 20%, #0a0a0f, #000);
+    color: #f0f0f0;
+    margin: 0;
+    min-height: 100vh;
+}
+
+header {
+    background: rgba(10, 10, 15, 0.9);
+    padding: 24px 0;
+    border-bottom: 1px solid #222;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+header h1 {
+    font-size: 2.4rem;
+    margin: 0;
+    color: #ffe81f;
+    text-shadow: 0 0 15px rgba(255, 232, 31, 0.35);
+    font-weight: 700;
+}
+
+header nav {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+header nav a {
+    color: #61dafb;
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+header nav a:hover,
+header nav a:focus {
+    color: #ffe81f;
+    text-shadow: 0 0 8px rgba(255, 232, 31, 0.45);
+    outline: none;
+}
+
+main {
+    padding: 48px 5vw;
+}
+
+footer {
+    margin-top: 48px;
+    padding: 16px 0;
+    border-top: 1px solid #222;
+    color: #777;
+    font-size: 0.9rem;
+    text-align: center;
+    background: rgba(10, 10, 15, 0.8);
+}
+
+a {
+    color: #61dafb;
+}
+
+a:hover,
+a:focus {
+    color: #ffe81f;
+}
+
+/* ====== Utilidades ====== */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}

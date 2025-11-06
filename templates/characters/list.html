@@ -1,10 +1,10 @@
-{% extends 'base.html' %}
+{% extends 'index.html' %}
 {% load static %}
 
 {% block title %}Personajes{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+<link rel="stylesheet" href="{% static 'css/characters.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -44,7 +44,7 @@
         <h2>Especies</h2>
         <div class="species-list">
             {% for especie in especies %}
-                <form method="get" action="{% url 'index_personajes' %}">
+                <form method="get" action="{% url 'characters' %}">
                     <input type="hidden" name="especie" value="{{ especie.id }}">
                     <button type="submit">{{ especie.name }}</button>
                 </form>
