@@ -22,6 +22,7 @@
                     <li><strong>Clasificación:</strong> {{ specie.classification|default:"Sin dato" }}</li>
                     <li><strong>Designación:</strong> {{ specie.designation|default:"Sin dato" }}</li>
                     <li><strong>Idioma:</strong> {{ specie.language|default:"Sin dato" }}</li>
+                    <li><strong>Personajes registrados:</strong> {{ specie.character_count }}</li>
                 </ul>
                 <a class="ghost-link" href="{% url 'species_detail' specie.id %}">Ver detalles →</a>
             </article>

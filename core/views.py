@@ -1,4 +1,4 @@
-from django.db.models import Prefetch, Q
+from django.db.models import Count, Prefetch, Q
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import TemplateView
 from .models import Character, Media, Planet, Species, StarSystem
@@ -100,7 +100,11 @@ def index_personajes(request):
 
     personajes = personajes.distinct().order_by("name")
 
-    species_options = Species.objects.order_by("name")
+    species_options = (
+        Species.objects.filter(character__isnull=False)
+        .annotate(character_count=Count("character", distinct=True))
+        .order_by("name")
+    )
     media_options = Media.objects.filter(media_type=Media.FILM).order_by("episode", "release_date", "title")
     filters_active = any(filters.values())
 
@@ -118,7 +122,11 @@ def index_personajes(request):
 
 
 def species_list(request):
-    species = Species.objects.order_by("name")
+    species = (
+        Species.objects.filter(character__isnull=False)
+        .annotate(character_count=Count("character", distinct=True))
+        .order_by("name")
+    )
     return render(request, "species/list.html", {"species_list": species})
 
 

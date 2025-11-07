@@ -22,7 +22,7 @@
                     <option value="">Todas</option>
                     {% for especie in species_options %}
                         <option value="{{ especie.id }}" {% if filters.species == especie.id|stringformat:"s" %}selected{% endif %}>
-                            {{ especie.name }}
+                            {{ especie.name }} ({{ especie.character_count }})
                         </option>
                     {% endfor %}
                 </select>
