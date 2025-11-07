@@ -6,30 +6,43 @@
 {% endblock %}
 
 {% block content %}
-<h2>Películas</h2>
+<h2>Saga en línea temporal</h2>
 
 {% if films %}
 <section class="media-section">
-    <div class="media-container">   
+    <div class="timeline-scroll">
         {% for film in films %}
-        <div class="media-card">
-            <h4>{{ film.title }}</h4>
-            <p><strong>Episodio:</strong> {{ film.episode }}</p>
-            <p><strong>Director:</strong> {{ film.director }}</p>
-            <p><strong>Productor:</strong> {{ film.producer }}</p>
-            <p><strong>Fecha de estreno:</strong> {{ film.release_date }}</p>
-            <p><strong>Sinopsis:</strong> {{ film.opening_crawl }}</p>
+        <article class="timeline-card">
+            <div class="timeline-marker">
+                <span class="timeline-year">
+                    {{ film.release_year|default:"Fecha desconocida" }}
+                </span>
+                {% if film.episode %}
+                    <span class="timeline-episode">Episodio {{ film.episode }}</span>
+                {% endif %}
+            </div>
 
-            <details>
-                <summary>Más información</summary>
-                <p><strong>Planetas:</strong> {{ film.planets|join:", " }}</p>
-                <p><strong>Personajes:</strong> {{ film.characters|join:", " }}</p>
-                <p><strong>Naves:</strong> {{ film.starships|join:", " }}</p>
-                <p><strong>Vehículos:</strong> {{ film.vehicles|join:", " }}</p>
-                <p><strong>Especies:</strong> {{ film.species|join:", " }}</p>
-                <p><a href="{{ film.url }}" target="_blank">Ver en SWAPI</a></p>
-            </details>
-        </div>
+            <div class="poster-frame">
+                <img src="{% static film.poster_static %}" alt="Póster de {{ film.title }}">
+            </div>
+
+            <div class="timeline-body">
+                <h4>{{ film.title }}</h4>
+                <p><strong>Director:</strong> {{ film.director }}</p>
+                <p><strong>Productor:</strong> {{ film.producer }}</p>
+                <p><strong>Estreno:</strong> {{ film.release_date|date:"d/m/Y" }}</p>
+                <p class="synopsis">{{ film.opening_crawl }}</p>
+                <details>
+                    <summary>Ver datos extra</summary>
+                    <p><strong>Planetas:</strong> {{ film.planets|join:", " }}</p>
+                    <p><strong>Personajes:</strong> {{ film.characters|join:", " }}</p>
+                    <p><strong>Naves:</strong> {{ film.starships|join:", " }}</p>
+                    <p><strong>Vehículos:</strong> {{ film.vehicles|join:", " }}</p>
+                    <p><strong>Especies:</strong> {{ film.species|join:", " }}</p>
+                    <p><a href="{{ film.url }}" target="_blank" rel="noopener">Ver en SWAPI</a></p>
+                </details>
+            </div>
+        </article>
         {% endfor %}
     </div>
 </section>

@@ -1,3 +1,71 @@
+.planet-filters {
+    margin-top: 1rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+}
+
+.filters-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: flex-end;
+}
+
+.filters-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    flex: 1 1 200px;
+    font-size: 0.9rem;
+    color: #c9d1d9;
+}
+
+.filters-form input,
+.filters-form select {
+    background: rgba(15, 15, 15, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: #fff;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.95rem;
+}
+
+.filters-actions {
+    display: flex;
+    gap: 0.8rem;
+    align-items: center;
+}
+
+.filters-actions button {
+    background: #ffcc00;
+    color: #0f0f0f;
+    border: none;
+    border-radius: 8px;
+    padding: 0.6rem 1.4rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.filters-actions button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(255, 204, 0, 0.2);
+}
+
+.filters-actions .reset-link {
+    color: #61dafb;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.filters-result {
+    margin-top: 0.8rem;
+    font-size: 0.95rem;
+    color: #9fb3c8;
+}
+
 .planet-section {
     padding: 40px 8%;
     background-color: #0f0f0f;
@@ -35,4 +103,15 @@
     font-size: 0.95rem;
     line-height: 1.4;
     margin: 0.3rem 0;
+}
+
+@media (max-width: 768px) {
+    .filters-form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filters-actions {
+        justify-content: flex-start;
+    }
 }

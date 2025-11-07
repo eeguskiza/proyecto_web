@@ -9,6 +9,51 @@
 
 <h2>Planetas</h2>
 
+<section class="planet-filters">
+    <form method="get" class="filters-form">
+        <label>
+            <span>Nombre</span>
+            <input type="text" name="q" placeholder="Buscar por nombre" value="{{ filters.q }}">
+        </label>
+        <label>
+            <span>Clima</span>
+            <select name="climate">
+                <option value="">Cualquier clima</option>
+                {% for option in climate_options %}
+                    <option value="{{ option }}" {% if filters.climate == option %}selected{% endif %}>{{ option }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label>
+            <span>Terreno</span>
+            <select name="terrain">
+                <option value="">Cualquier terreno</option>
+                {% for option in terrain_options %}
+                    <option value="{{ option }}" {% if filters.terrain == option %}selected{% endif %}>{{ option }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label>
+            <span>Sistema estelar</span>
+            <select name="system">
+                <option value="">Todos los sistemas</option>
+                {% for system in system_options %}
+                    <option value="{{ system.id }}" {% if filters.system == system.id|stringformat:"s" %}selected{% endif %}>{{ system.name }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <div class="filters-actions">
+            <button type="submit">Aplicar filtros</button>
+            {% if filters_active %}
+                <a href="{% url 'planets' %}" class="reset-link">Limpiar</a>
+            {% endif %}
+        </div>
+    </form>
+    {% if filters_active %}
+        <p class="filters-result">{{ planets|length }} planetas coinciden con los filtros.</p>
+    {% endif %}
+</section>
+
 {% if planets %}
 <section class="planet-section">
     <div class="planet-container">

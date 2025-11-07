@@ -1,7 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import TemplateView
-
-from .models import Character, Media, Planet, Species
+from .models import Character, Media, Planet, Species, StarSystem
 
 class HomeView(TemplateView):
     template_name = "home.html"
@@ -34,6 +33,12 @@ class HomeView(TemplateView):
     
 def media_view(request):
     films = Media.objects.filter(media_type=Media.FILM).order_by("episode")
+    poster_pool = [f"img/{i}.jpg" for i in range(1, 8)]
+
+    for index, film in enumerate(films):
+        film.release_year = film.release_date.year if film.release_date else None
+        film.poster_static = poster_pool[index % len(poster_pool)]
+
     return render(request, "media/list.html", {"films": films})
 
 
@@ -60,7 +65,26 @@ def index_personajes(request):
 
 
 def planets_view(request):
-    planets = Planet.objects.select_related("star_system").all().order_by("name")
+    filters = {
+        "q": request.GET.get("q", "").strip(),
+        "climate": request.GET.get("climate", "").strip(),
+        "terrain": request.GET.get("terrain", "").strip(),
+        "system": request.GET.get("system", "").strip(),
+    }
+
+    planets_qs = Planet.objects.select_related("star_system").all().order_by("name")
+
+    if filters["q"]:
+        planets_qs = planets_qs.filter(name__icontains=filters["q"])
+
+    if filters["climate"]:
+        planets_qs = planets_qs.filter(climate__icontains=filters["climate"])
+
+    if filters["terrain"]:
+        planets_qs = planets_qs.filter(terrain__icontains=filters["terrain"])
+
+    if filters["system"].isdigit():
+        planets_qs = planets_qs.filter(star_system_id=int(filters["system"]))
 
     bad_values = {"unknown", "desconocido", "none", "n/a", "null", "0", ""}
     
@@ -76,7 +100,7 @@ def planets_view(request):
         return phrases.get(field, "Archivo incompleto.")
 
     clean_planets = []
-    for p in planets:
+    for p in planets_qs:
         # Campos normalizados
         fields = {
             "climate": str(p.climate or "").strip().lower(),
@@ -105,4 +129,35 @@ def planets_view(request):
     # 🔹 Ordenar de más completos a menos
     clean_planets.sort(key=lambda x: x.valid_fields, reverse=True)
 
-    return render(request, "planets/list.html", {"planets": clean_planets})
+    climate_options = (
+        Planet.objects.exclude(climate__isnull=True)
+        .exclude(climate__exact="")
+        .order_by("climate")
+        .values_list("climate", flat=True)
+        .distinct()
+    )
+
+    terrain_options = (
+        Planet.objects.exclude(terrain__isnull=True)
+        .exclude(terrain__exact="")
+        .order_by("terrain")
+        .values_list("terrain", flat=True)
+        .distinct()
+    )
+
+    system_options = StarSystem.objects.order_by("name")
+
+    filters_active = any(filters.values())
+
+    return render(
+        request,
+        "planets/list.html",
+        {
+            "planets": clean_planets,
+            "filters": filters,
+            "filters_active": filters_active,
+            "climate_options": climate_options,
+            "terrain_options": terrain_options,
+            "system_options": system_options,
+        },
+    )

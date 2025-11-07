@@ -1,9 +1,9 @@
 /* ============================= */
-/* ESTILO PARA LA SECCIÓN DE PELÍCULAS */
+/* LÍNEA DE TIEMPO DE PELÍCULAS */
 /* ============================= */
 
 .media-section {
-    padding: 60px 20px;
+    padding: 40px 0 60px;
     background: radial-gradient(circle at 50% 20%, #0c0c15, #000);
     border-top: 1px solid #222;
 }
@@ -11,60 +11,133 @@
 .media-section h2 {
     color: #ffe81f;
     font-size: 2.2em;
-    margin-bottom: 40px;
+    margin: 0 20px 20px;
     text-shadow: 0 0 10px #ffe81f55;
 }
 
-/* ============================= */
-/* CONTENEDOR DE LAS TARJETAS */
-/* ============================= */
-.media-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    justify-content: center;
+.timeline-scroll {
+    display: flex;
+    gap: 32px;
+    overflow-x: auto;
+    padding: 30px 40px 20px;
+    scroll-snap-type: x proximity;
+    transform: scaleY(-1);
 }
 
-/* ============================= */
-/* TARJETAS DE PELÍCULA */
-/* ============================= */
-.media-card {
+.timeline-scroll::-webkit-scrollbar {
+    height: 16px;
+}
+
+.timeline-scroll::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.timeline-scroll::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, #ffe81f, #ff9c00);
+    border-radius: 999px;
+    border: 2px solid rgba(0, 0, 0, 0.4);
+}
+
+.timeline-card {
+    width: 420px;
+    min-width: 420px;
     background: rgba(17, 17, 17, 0.95);
     border: 1px solid #333;
     border-radius: 12px;
-    padding: 20px;
+    padding: 18px;
     box-shadow: 0 0 10px #000;
     text-align: left;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    scroll-snap-align: center;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    transform: scaleY(-1);
 }
 
-.media-card:hover {
-    transform: translateY(-6px);
+.timeline-card:hover {
+    transform: scaleY(-1) translateY(-6px);
     box-shadow: 0 0 15px #ffe81f55;
 }
 
-/* ============================= */
-/* TEXTOS DENTRO DE LAS TARJETAS */
-/* ============================= */
-.media-card h4 {
+.timeline-marker {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 8px;
+}
+
+.timeline-year {
+    font-size: 1.1rem;
+    font-weight: 700;
     color: #ffe81f;
-    font-size: 1.5em;
-    margin-bottom: 10px;
 }
 
-.media-card p {
-    color: #ccc;
-    font-size: 0.95em;
-    margin: 6px 0;
-}
-
-.media-card strong {
+.timeline-episode {
+    font-size: 0.9rem;
     color: #61dafb;
 }
 
-/* ============================= */
-/* DETALLES (acordeón de info extra) */
-/* ============================= */
+.poster-frame {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    max-height: 520px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: #050505;
+}
+
+.poster-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+}
+
+.timeline-body h4 {
+    color: #ffe81f;
+    font-size: 1.35em;
+    margin-bottom: 6px;
+}
+
+.timeline-body p {
+    color: #ccc;
+    font-size: 0.95em;
+    margin: 4px 0;
+}
+
+.timeline-body strong {
+    color: #61dafb;
+}
+
+.timeline-body .synopsis {
+    display: -webkit-box;
+    -webkit-line-clamp: 8;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    position: relative;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+    hyphens: auto;
+}
+
+.timeline-body .synopsis::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 60px;
+    background: linear-gradient(180deg, rgba(17,17,17,0) 0%, rgba(17,17,17,0.95) 100%);
+}
+
 details {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 8px;
@@ -91,37 +164,27 @@ details p {
     font-size: 0.9em;
 }
 
-/* ============================= */
-/* ENLACE A SWAPI */
-/* ============================= */
-.media-card a {
+.timeline-body a {
     color: #61dafb;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
-.media-card a:hover {
+.timeline-body a:hover {
     color: #ffe81f;
     text-decoration: underline;
 }
 
-/* ============================= */
-/* MENSAJE SI NO HAY PELÍCULAS */
-/* ============================= */
 .media-section p {
     color: #ccc;
     font-size: 1.1em;
     margin-top: 20px;
 }
 
-/* ============================= */
-/* AJUSTES RESPONSIVE */
-/* ============================= */
 @media (max-width: 600px) {
-    .media-card {
+    .timeline-card {
         padding: 15px;
-    }
-    .media-card h4 {
-        font-size: 1.3em;
+        width: calc(100% - 40px);
+        min-width: 260px;
     }
 }
