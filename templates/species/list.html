@@ -1,0 +1,33 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}Especies – Star Wars{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/species.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="species-page">
+    <header class="species-hero">
+        <h1>Catálogo de especies</h1>
+        <p>Consulta todas las razas registradas en la galaxia y profundiza en su trasfondo.</p>
+    </header>
+
+    <div class="species-grid">
+        {% for specie in species_list %}
+            <article class="species-card">
+                <h2>{{ specie.name }}</h2>
+                <ul>
+                    <li><strong>Clasificación:</strong> {{ specie.classification|default:"Sin dato" }}</li>
+                    <li><strong>Designación:</strong> {{ specie.designation|default:"Sin dato" }}</li>
+                    <li><strong>Idioma:</strong> {{ specie.language|default:"Sin dato" }}</li>
+                </ul>
+                <a class="ghost-link" href="{% url 'species_detail' specie.id %}">Ver detalles →</a>
+            </article>
+        {% empty %}
+            <p class="empty">No hay especies cargadas.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

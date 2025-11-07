@@ -1,3 +1,4 @@
+from django.db.models import Prefetch, Q
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import TemplateView
 from .models import Character, Media, Planet, Species, StarSystem
@@ -42,6 +43,22 @@ def media_view(request):
     return render(request, "media/list.html", {"films": films})
 
 
+def media_detail(request, media_id: int):
+    character_qs = Character.objects.select_related("species").order_by("name")
+    film = get_object_or_404(
+        Media.objects.prefetch_related(Prefetch("cast", queryset=character_qs)),
+        pk=media_id,
+    )
+
+    poster_pool = [f"img/{i}.jpg" for i in range(1, 8)]
+    film.poster_static = poster_pool[(film.id - 1) % len(poster_pool)]
+    film.release_year = film.release_date.year if film.release_date else None
+
+    cast = list(film.cast.all())
+
+    return render(request, "media/detail.html", {"film": film, "cast": cast})
+
+
 def handler_404(request, exception, template_name="errors/404.html"):
     return render(request, template_name, status=404)
 
@@ -49,19 +66,78 @@ def handler_500(request, template_name="errors/500.html"):
     return render(request, template_name, status=500)
 
 def detalle_personaje(request, personaje_id):
-    personaje = get_object_or_404(Character, id=personaje_id)
-    return render(request, "characters/detail.html", {"personaje": personaje})
+    personaje = get_object_or_404(
+        Character.objects.select_related("species", "homeworld").prefetch_related("films_and_series"),
+        id=personaje_id,
+    )
+    films = personaje.films_and_series.filter(media_type=Media.FILM).order_by("episode", "release_date", "title")
+    return render(request, "characters/detail.html", {"personaje": personaje, "films": films})
+
 
 def index_personajes(request):
-    especie_id = request.GET.get("especie")
-    personajes = Character.objects.select_related("species").all()
-    if especie_id:
-        personajes = personajes.filter(species_id=especie_id)
-    especies = Species.objects.all()
-    return render(request, "characters/list.html", {
-        "personajes": personajes,
-        "especies": especies,
-    })
+    filters = {
+        "q": request.GET.get("q", "").strip(),
+        "species": request.GET.get("species", "").strip(),
+        "media": request.GET.get("media", "").strip(),
+    }
+
+    personajes = Character.objects.select_related("species").prefetch_related("films_and_series").all()
+
+    if filters["q"]:
+        search = filters["q"]
+        personajes = personajes.filter(
+            Q(name__icontains=search)
+            | Q(gender__icontains=search)
+            | Q(species__name__icontains=search)
+            | Q(eye_color__icontains=search)
+        )
+
+    if filters["species"].isdigit():
+        personajes = personajes.filter(species_id=int(filters["species"]))
+
+    if filters["media"].isdigit():
+        personajes = personajes.filter(films_and_series__id=int(filters["media"]))
+
+    personajes = personajes.distinct().order_by("name")
+
+    species_options = Species.objects.order_by("name")
+    media_options = Media.objects.filter(media_type=Media.FILM).order_by("episode", "release_date", "title")
+    filters_active = any(filters.values())
+
+    return render(
+        request,
+        "characters/list.html",
+        {
+            "personajes": personajes,
+            "filters": filters,
+            "filters_active": filters_active,
+            "species_options": species_options,
+            "media_options": media_options,
+        },
+    )
+
+
+def species_list(request):
+    species = Species.objects.order_by("name")
+    return render(request, "species/list.html", {"species_list": species})
+
+
+def species_detail(request, species_id):
+    especie = get_object_or_404(Species, pk=species_id)
+    characters = (
+        Character.objects.select_related("homeworld")
+        .filter(species=especie)
+        .prefetch_related("films_and_series")
+        .order_by("name")
+    )
+    return render(
+        request,
+        "species/detail.html",
+        {
+            "species": especie,
+            "characters": characters,
+        },
+    )
 
 
 def planets_view(request):

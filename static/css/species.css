@@ -1,0 +1,132 @@
+/* ====== Listado de especies ====== */
+.species-page {
+    width: min(1100px, 92vw);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.species-hero {
+    text-align: center;
+    background: rgba(10, 10, 15, 0.8);
+    border: 1px solid #333;
+    border-radius: 16px;
+    padding: 28px 24px;
+    box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
+}
+
+.species-hero h1 {
+    margin: 0;
+    color: #ffe81f;
+    text-shadow: 0 0 12px rgba(255, 232, 31, 0.35);
+}
+
+.species-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 18px;
+}
+
+.species-card {
+    background: rgba(20, 20, 25, 0.95);
+    border: 1px solid #333;
+    border-radius: 14px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
+}
+
+.species-card h2 {
+    margin: 0;
+    color: #ffe81f;
+}
+
+.species-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    color: #ccc;
+    font-size: 0.9rem;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.species-card .ghost-link {
+    margin-top: auto;
+    text-align: right;
+}
+
+.empty {
+    text-align: center;
+    color: #999;
+}
+
+/* ====== Detalle de especie ====== */
+.species-detail {
+    width: min(900px, 92vw);
+    margin: 0 auto;
+    background: rgba(15, 15, 20, 0.92);
+    border: 1px solid #333;
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 0 18px rgba(0, 0, 0, 0.6);
+}
+
+.species-detail header h1 {
+    margin: 0 0 10px;
+    color: #ffe81f;
+}
+
+.species-detail dl {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin: 0;
+}
+
+.species-detail dt {
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    color: #9fb3c8;
+}
+
+.species-detail dd {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.species-detail .back-link a {
+    color: #61dafb;
+    text-decoration: none;
+}
+
+.species-characters {
+    margin-top: 26px;
+}
+
+.species-characters h2 {
+    margin-bottom: 10px;
+    color: #ffe81f;
+}
+
+.species-characters ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.species-characters li a {
+    color: #61dafb;
+    text-decoration: none;
+}
+
+.species-characters li a:hover {
+    color: #ffe81f;
+}

@@ -1,0 +1,47 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}{{ species.name }} – Especie{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/species.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="species-detail">
+    <header>
+        <p class="back-link"><a href="{% url 'species_list' %}">← Volver al catálogo</a></p>
+        <h1>{{ species.name }}</h1>
+        <dl>
+            <div>
+                <dt>Clasificación</dt>
+                <dd>{{ species.classification|default:"Sin dato" }}</dd>
+            </div>
+            <div>
+                <dt>Designación</dt>
+                <dd>{{ species.designation|default:"Sin dato" }}</dd>
+            </div>
+            <div>
+                <dt>Idioma</dt>
+                <dd>{{ species.language|default:"Sin dato" }}</dd>
+            </div>
+        </dl>
+    </header>
+
+    <section class="species-characters">
+        <h2>Personajes pertenecientes</h2>
+        {% if characters %}
+            <ul>
+                {% for character in characters %}
+                    <li>
+                        <a href="{% url 'detalle_personaje' character.id %}">{{ character.name }}</a>
+                        {% if character.homeworld %}<small>({{ character.homeworld.name }})</small>{% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No hay personajes asociados para esta especie.</p>
+        {% endif %}
+    </section>
+</section>
+{% endblock %}

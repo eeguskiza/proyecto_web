@@ -117,27 +117,6 @@
     color: #61dafb;
 }
 
-.timeline-body .synopsis {
-    display: -webkit-box;
-    -webkit-line-clamp: 8;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    position: relative;
-    overflow-wrap: anywhere;
-    word-break: break-word;
-    hyphens: auto;
-}
-
-.timeline-body .synopsis::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 60px;
-    background: linear-gradient(180deg, rgba(17,17,17,0) 0%, rgba(17,17,17,0.95) 100%);
-}
-
 details {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 8px;
@@ -175,10 +154,102 @@ details p {
     text-decoration: underline;
 }
 
+.timeline-body .ghost-link {
+    display: inline-block;
+    margin-top: 8px;
+    font-weight: 600;
+}
+
 .media-section p {
     color: #ccc;
     font-size: 1.1em;
     margin-top: 20px;
+}
+
+/* ====== Detalle de película ====== */
+.media-detail {
+    width: min(1100px, 92vw);
+    margin: 0 auto;
+    background: rgba(17, 17, 17, 0.9);
+    border: 1px solid #333;
+    border-radius: 18px;
+    padding: 30px;
+    box-shadow: 0 0 18px rgba(0, 0, 0, 0.6);
+}
+
+.media-detail .back-link a {
+    color: #61dafb;
+    text-decoration: none;
+}
+
+.detail-wrapper {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.media-detail .poster-frame {
+    width: clamp(220px, 32vw, 360px);
+    max-height: none;
+    transform: scaleY(1);
+}
+
+.media-detail .poster-frame img {
+    object-fit: cover;
+    object-position: center;
+}
+
+.detail-body {
+    flex: 1;
+    min-width: 260px;
+}
+
+.detail-body h1 {
+    margin-top: 0;
+    color: #ffe81f;
+}
+
+.detail-body .meta {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.synopsis-full {
+    line-height: 1.5;
+    color: #ddd;
+}
+
+.media-cast {
+    margin-top: 30px;
+}
+
+.media-cast h2 {
+    color: #ffe81f;
+}
+
+.media-cast ul {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0 0;
+    columns: 2;
+    gap: 10px;
+}
+
+.media-cast li {
+    margin-bottom: 6px;
+}
+
+.media-cast a {
+    color: #61dafb;
+    text-decoration: none;
+}
+
+.media-cast a:hover {
+    color: #ffe81f;
 }
 
 @media (max-width: 600px) {

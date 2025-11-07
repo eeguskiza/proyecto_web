@@ -27,11 +27,10 @@
             </div>
 
             <div class="timeline-body">
-                <h4>{{ film.title }}</h4>
+                <h4><a href="{% url 'media_detail' film.id %}">{{ film.title }}</a></h4>
                 <p><strong>Director:</strong> {{ film.director }}</p>
                 <p><strong>Productor:</strong> {{ film.producer }}</p>
                 <p><strong>Estreno:</strong> {{ film.release_date|date:"d/m/Y" }}</p>
-                <p class="synopsis">{{ film.opening_crawl }}</p>
                 <details>
                     <summary>Ver datos extra</summary>
                     <p><strong>Planetas:</strong> {{ film.planets|join:", " }}</p>
@@ -39,8 +38,8 @@
                     <p><strong>Naves:</strong> {{ film.starships|join:", " }}</p>
                     <p><strong>Vehículos:</strong> {{ film.vehicles|join:", " }}</p>
                     <p><strong>Especies:</strong> {{ film.species|join:", " }}</p>
-                    <p><a href="{{ film.url }}" target="_blank" rel="noopener">Ver en SWAPI</a></p>
                 </details>
+                <a class="ghost-link" href="{% url 'media_detail' film.id %}">Ver ficha completa →</a>
             </div>
         </article>
         {% endfor %}

@@ -1,0 +1,50 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}{{ film.title }} – Película{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/media.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="media-detail">
+    <p class="back-link"><a href="{% url 'media' %}">← Volver a la línea temporal</a></p>
+    <div class="detail-wrapper">
+        <div class="poster-frame">
+            <img src="{% static film.poster_static %}" alt="Póster de {{ film.title }}">
+        </div>
+
+        <div class="detail-body">
+            <h1>{{ film.title }}</h1>
+            <ul class="meta">
+                {% if film.episode %}
+                <li><strong>Episodio:</strong> {{ film.episode }}</li>
+                {% endif %}
+                <li><strong>Director:</strong> {{ film.director|default:"Sin dato" }}</li>
+                <li><strong>Productor:</strong> {{ film.producer|default:"Sin dato" }}</li>
+                <li><strong>Estreno:</strong> {{ film.release_date|date:"d/m/Y"|default:"Sin fecha" }}</li>
+                <li><strong>Año:</strong> {{ film.release_year|default:"Desconocido" }}</li>
+            </ul>
+
+            <p class="synopsis-full">{{ film.opening_crawl|default:"Sin sinopsis" }}</p>
+        </div>
+    </div>
+
+    <section class="media-cast">
+        <h2>Personajes que aparecen</h2>
+        {% if cast %}
+            <ul>
+                {% for character in cast %}
+                    <li>
+                        <a href="{% url 'detalle_personaje' character.id %}">{{ character.name }}</a>
+                        {% if character.species %}<small>({{ character.species.name }})</small>{% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No se han asociado personajes a esta película.</p>
+        {% endif %}
+    </section>
+</section>
+{% endblock %}

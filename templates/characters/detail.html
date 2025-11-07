@@ -39,5 +39,20 @@
         </div>
     </div>
 
+    <section class="filmography">
+        <h2>Filmografía</h2>
+        {% if films %}
+            <ul>
+                {% for film in films %}
+                    <li>
+                        <a href="{% url 'media_detail' film.id %}">{{ film.title }}</a>
+                        {% if film.release_date %}<small>({{ film.release_date|date:"Y" }})</small>{% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Este personaje no tiene películas asociadas en la base de datos.</p>
+        {% endif %}
+    </section>
 </div>
 {% endblock %}

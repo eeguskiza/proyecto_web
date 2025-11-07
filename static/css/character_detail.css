@@ -52,6 +52,39 @@
     color: #ffe81f;
 }
 
+.filmography {
+    margin-top: 30px;
+    background: rgba(15, 15, 20, 0.9);
+    border: 1px solid #333;
+    border-radius: 12px;
+    padding: 20px;
+    color: #ddd;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+.filmography h2 {
+    margin-top: 0;
+    color: #ffe81f;
+}
+
+.filmography ul {
+    list-style: none;
+    padding: 0;
+    margin: 12px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.filmography li a {
+    color: #61dafb;
+    text-decoration: none;
+}
+
+.filmography li a:hover {
+    color: #ffe81f;
+}
+
 @media (max-width: 640px) {
     .personaje-card {
         flex-direction: column;

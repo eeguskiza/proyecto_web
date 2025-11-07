@@ -8,11 +8,50 @@
 {% endblock %}
 
 {% block content %}
-<div class="container">
+<section class="characters-page">
+    <div class="filters-panel">
+        <h1>Buscador galáctico</h1>
+        <form method="get" class="filters-form">
+            <label>
+                <span>Texto libre</span>
+                <input type="search" name="q" value="{{ filters.q }}" placeholder="Nombre, género, color de ojos...">
+            </label>
+            <label>
+                <span>Especie</span>
+                <select name="species">
+                    <option value="">Todas</option>
+                    {% for especie in species_options %}
+                        <option value="{{ especie.id }}" {% if filters.species == especie.id|stringformat:"s" %}selected{% endif %}>
+                            {{ especie.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </label>
+            <label>
+                <span>Película</span>
+                <select name="media">
+                    <option value="">Cualquiera</option>
+                    {% for film in media_options %}
+                        <option value="{{ film.id }}" {% if filters.media == film.id|stringformat:"s" %}selected{% endif %}>
+                            {{ film.title }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </label>
+            <div class="filters-actions">
+                <button type="submit">Aplicar filtros</button>
+                {% if filters_active %}
+                    <a href="{% url 'characters' %}" class="reset-link">Limpiar</a>
+                {% endif %}
+            </div>
+        </form>
+        <div class="filters-meta">
+            <p>{{ personajes|length }} personajes encontrados.</p>
+            <a href="{% url 'species_list' %}" class="ghost-link">Ver catálogo completo de especies →</a>
+        </div>
+    </div>
 
-    <!-- Tabla de personajes -->
     <div class="tabla-wrapper">
-        <h1>Personajes de Star Wars</h1>
         <table class="tabla-personajes">
             <thead>
                 <tr>
@@ -26,31 +65,25 @@
                 <tr>
                     <td class="foto-cell">
                         <a href="{% url 'detalle_personaje' personaje.id %}">
-                            <img src="{{ personaje.image_url }}" alt="{{ personaje.name }}">
+                            {% if personaje.image_url %}
+                                <img src="{{ personaje.image_url }}" alt="{{ personaje.name }}">
+                            {% else %}
+                                <img src="{% static 'img/no_image.png' %}" alt="{{ personaje.name }}">
+                            {% endif %}
                         </a>
                     </td>
                     <td>
                         <a href="{% url 'detalle_personaje' personaje.id %}">{{ personaje.name }}</a>
                     </td>
-                    <td>{{ personaje.species.name|default:"Desconocido" }}</td>
+                    <td>{{ personaje.species.name|default:"Desconocida" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="empty">No se encontraron personajes con esos criterios.</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
-
-    <!-- Sidebar de especies -->
-    <aside class="sidebar">
-        <h2>Especies</h2>
-        <div class="species-list">
-            {% for especie in especies %}
-                <form method="get" action="{% url 'characters' %}">
-                    <input type="hidden" name="especie" value="{{ especie.id }}">
-                    <button type="submit">{{ especie.name }}</button>
-                </form>
-            {% endfor %}
-        </div>
-    </aside>
-
-</div>
+</section>
 {% endblock %}
