@@ -85,7 +85,6 @@
 
 .poster-frame {
     width: 100%;
-    aspect-ratio: 2 / 3;
     max-height: 520px;
     border-radius: 10px;
     overflow: hidden;
