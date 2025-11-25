@@ -164,3 +164,24 @@ class CharacterAffiliation(models.Model):
 
     class Meta:
         unique_together = [("character", "affiliation")]
+
+
+class PlanetInquiry(models.Model):
+    name = models.CharField(max_length=120)
+    email = models.EmailField(null=True, blank=True)
+    affiliation = models.CharField(max_length=120, null=True, blank=True)
+    planet = models.ForeignKey(
+        Planet,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="inquiries",
+    )
+    message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.name} - {self.planet or 'Sin planeta'}"

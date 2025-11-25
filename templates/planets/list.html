@@ -73,4 +73,53 @@
 {% else %}
 <p>No hay planetas disponibles en este momento.</p>
 {% endif %}
+
+<section class="planet-inquiry">
+    <h3>Envía una transmisión al Senado</h3>
+    <p>Comparte información adicional sobre un planeta o reporta anomalías.</p>
+    {% if form_success %}
+        <div class="form-success">Transmisión recibida. Gracias por colaborar con la galaxia.</div>
+    {% endif %}
+    <form method="post" class="inquiry-form">
+        {% csrf_token %}
+        <div class="form-grid">
+            <div class="form-field {% if inquiry_form.name.errors %}has-error{% endif %}">
+                <label for="{{ inquiry_form.name.id_for_label }}">Nombre*</label>
+                {{ inquiry_form.name }}
+                {% if inquiry_form.name.errors %}
+                    <small class="error">{{ inquiry_form.name.errors|striptags }}</small>
+                {% endif %}
+            </div>
+            <div class="form-field {% if inquiry_form.email.errors %}has-error{% endif %}">
+                <label for="{{ inquiry_form.email.id_for_label }}">Email</label>
+                {{ inquiry_form.email }}
+                {% if inquiry_form.email.errors %}
+                    <small class="error">{{ inquiry_form.email.errors|striptags }}</small>
+                {% endif %}
+            </div>
+            <div class="form-field {% if inquiry_form.affiliation.errors %}has-error{% endif %}">
+                <label for="{{ inquiry_form.affiliation.id_for_label }}">Afiliación</label>
+                {{ inquiry_form.affiliation }}
+                {% if inquiry_form.affiliation.errors %}
+                    <small class="error">{{ inquiry_form.affiliation.errors|striptags }}</small>
+                {% endif %}
+            </div>
+            <div class="form-field {% if inquiry_form.planet.errors %}has-error{% endif %}">
+                <label for="{{ inquiry_form.planet.id_for_label }}">Planeta</label>
+                {{ inquiry_form.planet }}
+                {% if inquiry_form.planet.errors %}
+                    <small class="error">{{ inquiry_form.planet.errors|striptags }}</small>
+                {% endif %}
+            </div>
+        </div>
+        <div class="form-field {% if inquiry_form.message.errors %}has-error{% endif %}">
+            <label for="{{ inquiry_form.message.id_for_label }}">Mensaje*</label>
+            {{ inquiry_form.message }}
+            {% if inquiry_form.message.errors %}
+                <small class="error">{{ inquiry_form.message.errors|striptags }}</small>
+            {% endif %}
+        </div>
+        <button type="submit">Enviar transmisión</button>
+    </form>
+</section>
 {% endblock %}

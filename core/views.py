@@ -1,6 +1,7 @@
 from django.db.models import Count, Prefetch, Q
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import TemplateView
+from .forms import PlanetInquiryForm
 from .models import Character, Media, Planet, Species, StarSystem
 
 class HomeView(TemplateView):
@@ -149,6 +150,16 @@ def species_detail(request, species_id):
 
 
 def planets_view(request):
+    inquiry_form = PlanetInquiryForm()
+    form_success = False
+
+    if request.method == "POST":
+        inquiry_form = PlanetInquiryForm(request.POST)
+        if inquiry_form.is_valid():
+            inquiry_form.save()
+            form_success = True
+            inquiry_form = PlanetInquiryForm()
+
     filters = {
         "q": request.GET.get("q", "").strip(),
         "climate": request.GET.get("climate", "").strip(),
@@ -243,5 +254,7 @@ def planets_view(request):
             "climate_options": climate_options,
             "terrain_options": terrain_options,
             "system_options": system_options,
+            "inquiry_form": inquiry_form,
+            "form_success": form_success,
         },
     )
