@@ -10,6 +10,9 @@
 {% block content %}
 <section class="characters-page">
     <div class="filters-panel">
+        {% if perms.core.add_character %}
+        <a href="{% url 'crear_personaje' %}" class="btn btn-primary">Crear Personaje</a>
+        {% endif %}
         <h1>Buscador galáctico</h1>
         <form method="get" class="filters-form">
             <label>
@@ -85,5 +88,6 @@
             </tbody>
         </table>
     </div>
+    
 </section>
 {% endblock %}

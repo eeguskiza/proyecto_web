@@ -3,6 +3,22 @@ from django.shortcuts import get_object_or_404, render
 from django.views.generic import TemplateView
 from .forms import PlanetInquiryForm
 from .models import Character, Media, Planet, Species, StarSystem
+from .forms import CharacterForm
+from django.contrib.auth.decorators import login_required, permission_required
+from django.shortcuts import render, redirect, get_object_or_404
+
+@login_required
+@permission_required('core.add_character', raise_exception=True)
+def crear_personaje(request):
+    if request.method == "POST":
+        form = CharacterForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('index_personajes')
+    else:
+        form = CharacterForm()
+
+    return render(request, "characters/crear.html", {"form": form})
 
 class HomeView(TemplateView):
     template_name = "home.html"

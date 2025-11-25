@@ -13,4 +13,8 @@ urlpatterns = [
     path("species/<int:species_id>/", views.species_detail, name="species_detail"),
     path("species/", views.species_list, name="species_list"),
     path("planets/", views.planets_view, name="planets"),
+    path("characters/crear/", views.crear_personaje, name="crear_personaje"),
+    path("characters/", views.index_personajes, name="index_personajes"),
+    path("characters/<int:personaje_id>/", views.detalle_personaje, name="detalle_personaje"),
+    
 ]
