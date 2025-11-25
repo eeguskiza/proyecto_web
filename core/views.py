@@ -5,7 +5,9 @@ from .forms import PlanetInquiryForm
 from .models import Character, Media, Planet, Species, StarSystem
 from .forms import CharacterForm
 from django.contrib.auth.decorators import login_required, permission_required
+from django.views.decorators.cache import cache_page
 from django.shortcuts import render, redirect, get_object_or_404
+
 
 @login_required
 @permission_required('core.add_character', raise_exception=True)
@@ -18,14 +20,18 @@ def crear_personaje(request):
     else:
         form = CharacterForm()
 
+
     return render(request, "characters/crear.html", {"form": form})
+
 
 class HomeView(TemplateView):
     template_name = "home.html"
 
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         featured = []
+
 
         for s in Species.objects.all():
             tallest = (
@@ -41,6 +47,7 @@ class HomeView(TemplateView):
             if tallest:
                 featured.append(tallest)
 
+
         context["featured_characters"] = featured
         context["stats"] = {
             "personajes": Character.objects.count(),
@@ -48,16 +55,23 @@ class HomeView(TemplateView):
             "peliculas": Media.objects.filter(media_type=Media.FILM).count(),
         }
         return context
-    
+   
+@cache_page(60 * 15)
 def media_view(request):
     films = Media.objects.filter(media_type=Media.FILM).order_by("episode")
     poster_pool = [f"img/{i}.jpg" for i in range(1, 8)]
+
 
     for index, film in enumerate(films):
         film.release_year = film.release_date.year if film.release_date else None
         film.poster_static = poster_pool[index % len(poster_pool)]
 
+
     return render(request, "media/list.html", {"films": films})
+
+
+
+
 
 
 def media_detail(request, media_id: int):
@@ -67,20 +81,27 @@ def media_detail(request, media_id: int):
         pk=media_id,
     )
 
+
     poster_pool = [f"img/{i}.jpg" for i in range(1, 8)]
     film.poster_static = poster_pool[(film.id - 1) % len(poster_pool)]
     film.release_year = film.release_date.year if film.release_date else None
 
+
     cast = list(film.cast.all())
 
+
     return render(request, "media/detail.html", {"film": film, "cast": cast})
+
+
 
 
 def handler_404(request, exception, template_name="errors/404.html"):
     return render(request, template_name, status=404)
 
+
 def handler_500(request, template_name="errors/500.html"):
     return render(request, template_name, status=500)
+
 
 def detalle_personaje(request, personaje_id):
     personaje = get_object_or_404(
@@ -91,6 +112,8 @@ def detalle_personaje(request, personaje_id):
     return render(request, "characters/detail.html", {"personaje": personaje, "films": films})
 
 
+
+
 def index_personajes(request):
     filters = {
         "q": request.GET.get("q", "").strip(),
@@ -98,7 +121,9 @@ def index_personajes(request):
         "media": request.GET.get("media", "").strip(),
     }
 
+
     personajes = Character.objects.select_related("species").prefetch_related("films_and_series").all()
+
 
     if filters["q"]:
         search = filters["q"]
@@ -109,13 +134,17 @@ def index_personajes(request):
             | Q(eye_color__icontains=search)
         )
 
+
     if filters["species"].isdigit():
         personajes = personajes.filter(species_id=int(filters["species"]))
+
 
     if filters["media"].isdigit():
         personajes = personajes.filter(films_and_series__id=int(filters["media"]))
 
+
     personajes = personajes.distinct().order_by("name")
+
 
     species_options = (
         Species.objects.filter(character__isnull=False)
@@ -124,6 +153,7 @@ def index_personajes(request):
     )
     media_options = Media.objects.filter(media_type=Media.FILM).order_by("episode", "release_date", "title")
     filters_active = any(filters.values())
+
 
     return render(
         request,
@@ -138,6 +168,8 @@ def index_personajes(request):
     )
 
 
+
+
 def species_list(request):
     species = (
         Species.objects.filter(character__isnull=False)
@@ -145,6 +177,8 @@ def species_list(request):
         .order_by("name")
     )
     return render(request, "species/list.html", {"species_list": species})
+
+
 
 
 def species_detail(request, species_id):
@@ -165,9 +199,12 @@ def species_detail(request, species_id):
     )
 
 
+
+
 def planets_view(request):
     inquiry_form = PlanetInquiryForm()
     form_success = False
+
 
     if request.method == "POST":
         inquiry_form = PlanetInquiryForm(request.POST)
@@ -176,6 +213,7 @@ def planets_view(request):
             form_success = True
             inquiry_form = PlanetInquiryForm()
 
+
     filters = {
         "q": request.GET.get("q", "").strip(),
         "climate": request.GET.get("climate", "").strip(),
@@ -183,22 +221,28 @@ def planets_view(request):
         "system": request.GET.get("system", "").strip(),
     }
 
+
     planets_qs = Planet.objects.select_related("star_system").all().order_by("name")
+
 
     if filters["q"]:
         planets_qs = planets_qs.filter(name__icontains=filters["q"])
 
+
     if filters["climate"]:
         planets_qs = planets_qs.filter(climate__icontains=filters["climate"])
+
 
     if filters["terrain"]:
         planets_qs = planets_qs.filter(terrain__icontains=filters["terrain"])
 
+
     if filters["system"].isdigit():
         planets_qs = planets_qs.filter(star_system_id=int(filters["system"]))
 
+
     bad_values = {"unknown", "desconocido", "none", "n/a", "null", "0", ""}
-    
+   
     def imperial_phrase(field):
         phrases = {
             "climate": "Condición atmosférica clasificada.",
@@ -209,6 +253,7 @@ def planets_view(request):
             "star_system": "Sector no autorizado.",
         }
         return phrases.get(field, "Archivo incompleto.")
+
 
     clean_planets = []
     for p in planets_qs:
@@ -221,8 +266,10 @@ def planets_view(request):
             "grid_coordinates": str(p.grid_coordinates or "").strip().lower(),
         }
 
+
         # Contamos campos válidos
         valid_count = sum(1 for v in fields.values() if v not in bad_values)
+
 
         # Creamos versiones “display” con frases imperiales
         p.display_climate = p.climate if fields["climate"] not in bad_values else imperial_phrase("climate")
@@ -232,13 +279,17 @@ def planets_view(request):
         p.display_grid = p.grid_coordinates if fields["grid_coordinates"] not in bad_values else imperial_phrase("grid_coordinates")
         p.display_system = getattr(p.star_system, "name", imperial_phrase("star_system"))
 
+
         # Guardamos número de campos válidos (para ordenar después)
         p.valid_fields = valid_count
 
+
         clean_planets.append(p)
+
 
     # 🔹 Ordenar de más completos a menos
     clean_planets.sort(key=lambda x: x.valid_fields, reverse=True)
+
 
     climate_options = (
         Planet.objects.exclude(climate__isnull=True)
@@ -248,6 +299,7 @@ def planets_view(request):
         .distinct()
     )
 
+
     terrain_options = (
         Planet.objects.exclude(terrain__isnull=True)
         .exclude(terrain__exact="")
@@ -256,9 +308,12 @@ def planets_view(request):
         .distinct()
     )
 
+
     system_options = StarSystem.objects.order_by("name")
 
+
     filters_active = any(filters.values())
+
 
     return render(
         request,

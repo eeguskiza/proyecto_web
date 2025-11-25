@@ -1,6 +1,5 @@
 from django.db import models
-
-from django.db import models
+from django.utils.functional import cached_property
 
 class Species(models.Model):
     name = models.CharField(max_length=80, unique=True)
@@ -136,6 +135,12 @@ class Character(models.Model):
     affiliations = models.ManyToManyField(
         Affiliation, through="CharacterAffiliation", related_name="members", blank=True
     )
+    
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         ordering = ["name"]
