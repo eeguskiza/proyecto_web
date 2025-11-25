@@ -139,3 +139,13 @@ Acceso al admin: `http://127.0.0.1:8000/admin`
 
 * Datos: [akabab/starwars-api](https://github.com/akabab/starwars-api) y [SWAPI](https://swapi.py4e.com/)
 * Autores: **Erik Eguskiza**, **Alexander Jauregui**, **Jon Velasco** y **Alex Ribera**
+
+## CONVERTIRTE EN EDITOR
+* python manage.py createsuperuser (si esto lo has hecho ya esta)
+* desde el shell:
+from django.contrib.auth.models import User
+usuario = User.objects.get(username='juan')
+usuario.is_staff = True        # Acceso al admin
+usuario.is_superuser = True    # Permisos totales
+usuario.save()
+luego runserver te metes en el admin inicias sesion con el user name q has creado y te metes en el normal
