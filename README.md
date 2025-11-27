@@ -149,3 +149,6 @@ usuario.is_staff = True        # Acceso al admin
 usuario.is_superuser = True    # Permisos totales
 usuario.save()
 luego runserver te metes en el admin inicias sesion con el user name q has creado y te metes en el normal
+
+## traductor
+Implementé i18n: añadí idiomas y LocaleMiddleware, envolví las URLs con i18n_patterns, puse selector de idioma en el layout y marqué los textos principales con {% trans %}/{% blocktrans %}. Generé las traducciones a inglés en locale/en/ y compilé el .mo, así que al cambiar de idioma desde el selector se sirven los textos traducidos.

@@ -1,27 +1,40 @@
 <!DOCTYPE html>
 {% load static %}
-<html lang="es">
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Base de datos Star Wars{% endblock %}</title>
+    <title>{% block title %}{% trans "Base de datos Star Wars" %}{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
     {% block extra_css %}{% endblock %}
 </head>
 <body>
 <header>
-    <h1>Star Wars Site</h1>
+    <h1>{% trans "Star Wars Site" %}</h1>
     <nav>
-        <a href="{% url 'home' %}">Inicio</a>
-        <a href="{% url 'characters' %}">Personajes</a>
-        <a href="{% url 'media' %}">Media</a>
-        <a href="{% url 'planets' %}">Planetas</a>
+        <a href="{% url 'home' %}">{% trans "Inicio" %}</a>
+        <a href="{% url 'characters' %}">{% trans "Personajes" %}</a>
+        <a href="{% url 'media' %}">{% trans "Media" %}</a>
+        <a href="{% url 'planets' %}">{% trans "Planetas" %}</a>
     </nav>
+    <form action="{% url 'set_language' %}" method="post" class="language-switcher">
+        {% csrf_token %}
+        <label for="language-selector">{% trans "Idioma" %}</label>
+        <select name="language" id="language-selector" onchange="this.form.submit()">
+            {% get_current_language as LANGUAGE_CODE %}
+            {% get_available_languages as LANGUAGES %}
+            {% for lang_code, lang_name in LANGUAGES %}
+                <option value="{{ lang_code }}" {% if lang_code == LANGUAGE_CODE %}selected{% endif %}>{{ lang_name }}</option>
+            {% endfor %}
+        </select>
+    </form>
 </header>
 <main>
     {% block content %}{% endblock %}
 </main>
 <footer>
-    <p>© 2025 Proyecto Star Wars – Deusto</p>
+    <p>{% trans "© 2025 Proyecto Star Wars – Deusto" %}</p>
 </footer>
 {% block extra_js %}{% endblock %}
 </body>

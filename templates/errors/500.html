@@ -1,6 +1,7 @@
 {% extends "index.html" %}
-{% block title %}Error del servidor{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Error del servidor" %}{% endblock %}
 {% block content %}
-  <h1>500 — Error del servidor</h1>
-  <p>Algo ha fallado. Intenta de nuevo en un minuto.</p>
+  <h1>{% trans "500 — Error del servidor" %}</h1>
+  <p>{% trans "Algo ha fallado. Intenta de nuevo en un minuto." %}</p>
 {% endblock %}

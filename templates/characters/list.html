@@ -1,7 +1,8 @@
 {% extends 'index.html' %}
 {% load static %}
+{% load i18n %}
 
-{% block title %}Personajes{% endblock %}
+{% block title %}{% trans "Personajes" %}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/characters.css' %}">
@@ -11,18 +12,18 @@
 <section class="characters-page">
     <div class="filters-panel">
         {% if perms.core.add_character %}
-        <a href="{% url 'crear_personaje' %}" class="btn btn-primary">Crear Personaje</a>
+        <a href="{% url 'crear_personaje' %}" class="btn btn-primary">{% trans "Crear Personaje" %}</a>
         {% endif %}
-        <h1>Buscador galáctico</h1>
+        <h1>{% trans "Buscador galáctico" %}</h1>
         <form method="get" class="filters-form">
             <label>
-                <span>Texto libre</span>
-                <input type="search" name="q" value="{{ filters.q }}" placeholder="Nombre, género, color de ojos...">
+                <span>{% trans "Texto libre" %}</span>
+                <input type="search" name="q" value="{{ filters.q }}" placeholder="{% trans 'Nombre, género, color de ojos...' %}">
             </label>
             <label>
-                <span>Especie</span>
+                <span>{% trans "Especie" %}</span>
                 <select name="species">
-                    <option value="">Todas</option>
+                    <option value="">{% trans "Todas" %}</option>
                     {% for especie in species_options %}
                         <option value="{{ especie.id }}" {% if filters.species == especie.id|stringformat:"s" %}selected{% endif %}>
                             {{ especie.name }} ({{ especie.character_count }})
@@ -31,9 +32,9 @@
                 </select>
             </label>
             <label>
-                <span>Película</span>
+                <span>{% trans "Película" %}</span>
                 <select name="media">
-                    <option value="">Cualquiera</option>
+                    <option value="">{% trans "Cualquiera" %}</option>
                     {% for film in media_options %}
                         <option value="{{ film.id }}" {% if filters.media == film.id|stringformat:"s" %}selected{% endif %}>
                             {{ film.title }}
@@ -42,15 +43,15 @@
                 </select>
             </label>
             <div class="filters-actions">
-                <button type="submit">Aplicar filtros</button>
+                <button type="submit">{% trans "Aplicar filtros" %}</button>
                 {% if filters_active %}
-                    <a href="{% url 'characters' %}" class="reset-link">Limpiar</a>
+                    <a href="{% url 'characters' %}" class="reset-link">{% trans "Limpiar" %}</a>
                 {% endif %}
             </div>
         </form>
         <div class="filters-meta">
-            <p>{{ personajes|length }} personajes encontrados.</p>
-            <a href="{% url 'species_list' %}" class="ghost-link">Ver catálogo completo de especies →</a>
+            <p>{% blocktrans with total=personajes|length %}{{ total }} personajes encontrados.{% endblocktrans %}</p>
+            <a href="{% url 'species_list' %}" class="ghost-link">{% trans "Ver catálogo completo de especies →" %}</a>
         </div>
     </div>
 
@@ -58,9 +59,9 @@
         <table class="tabla-personajes">
             <thead>
                 <tr>
-                    <th>Foto</th>
-                    <th>Nombre</th>
-                    <th>Especie</th>
+                    <th>{% trans "Foto" %}</th>
+                    <th>{% trans "Nombre" %}</th>
+                    <th>{% trans "Especie" %}</th>
                 </tr>
             </thead>
             <tbody>
@@ -78,11 +79,11 @@
                     <td>
                         <a href="{% url 'detalle_personaje' personaje.id %}">{{ personaje.name }}</a>
                     </td>
-                    <td>{{ personaje.species.name|default:"Desconocida" }}</td>
+                    <td>{{ personaje.species.name|default:_("Desconocida") }}</td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="3" class="empty">No se encontraron personajes con esos criterios.</td>
+                    <td colspan="3" class="empty">{% trans "No se encontraron personajes con esos criterios." %}</td>
                 </tr>
                 {% endfor %}
             </tbody>

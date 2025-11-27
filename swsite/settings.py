@@ -14,7 +14,9 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 
+import os
 from pathlib import Path
+from django.utils.translation import gettext_lazy as _
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -60,20 +62,28 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'core.apps.CoreConfig',
-    'debug_toolbar',
 ]
 
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# Añadir debug toolbar solo si está instalada y en DEBUG
+if DEBUG:
+    try:
+        import debug_toolbar  # noqa: F401
+        INSTALLED_APPS.append('debug_toolbar')
+        MIDDLEWARE.insert(1, 'debug_toolbar.middleware.DebugToolbarMiddleware')
+    except ImportError:
+        pass
 
 
 ROOT_URLCONF = 'swsite.urls'
@@ -157,6 +167,15 @@ USE_I18N = True
 
 
 USE_TZ = True
+
+
+LANGUAGES = [
+    ('es', _('Spanish')),
+    ('en', _('English')),
+]
+
+
+LOCALE_PATHS = [BASE_DIR / 'locale']
 
 
 

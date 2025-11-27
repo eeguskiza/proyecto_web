@@ -16,19 +16,28 @@ Including another URLconf
 """
 from django.conf import settings
 from django.contrib import admin
+from django.conf.urls.i18n import i18n_patterns
 from django.urls import path, include
 from core.views import HomeView
 
 urlpatterns = [
+    path("i18n/", include("django.conf.urls.i18n")),
+]
+
+urlpatterns += i18n_patterns(
     path("admin/", admin.site.urls),
     path("", include("core.urls")),
     path("", HomeView.as_view(), name="home"),
-]
+)
 if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns += [
-        path('__debug__/', include(debug_toolbar.urls)),
-    ]
+    try:
+        import debug_toolbar
+    except ImportError:
+        debug_toolbar = None
+    if debug_toolbar:
+        urlpatterns += [
+            path('__debug__/', include(debug_toolbar.urls)),
+        ]
 
 handler404 = "core.views.handler_404"
 handler500 = "core.views.handler_500"

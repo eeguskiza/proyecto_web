@@ -1,7 +1,8 @@
 {% extends "index.html" %}
 {% load static %}
+{% load i18n %}
 
-{% block title %}Inicio – Star Wars Site{% endblock %}
+{% block title %}{% trans "Inicio – Star Wars Site" %}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/home.css' %}">
@@ -14,16 +15,13 @@
 <!-- ============================= -->
 <section class="intro">
   <p>
-    Bienvenido a <strong>Star Wars Site</strong>, una aplicación web desarrollada con la intención
-    de explorar el universo de Star Wars de forma interactiva y visual.
+    {% blocktrans %}Bienvenido a <strong>Star Wars Site</strong>, una aplicación web desarrollada con la intención de explorar el universo de Star Wars de forma interactiva y visual.{% endblocktrans %}
   </p>
   <p>
-    Aquí podrás conocer a los personajes más emblemáticos de la saga, descubrir las especies que habitan en la galaxia,
-    los planetas donde viven y las producciones en las que aparecen.
+    {% blocktrans %}Aquí podrás conocer a los personajes más emblemáticos de la saga, descubrir las especies que habitan en la galaxia, los planetas donde viven y las producciones en las que aparecen.{% endblocktrans %}
   </p>
   <p>
-    Nuestros datos estan organizados y relacionados los datos entre personajes, especies, planetas y películas para mostrar
-    cómo una base de datos bien estructurada puede transformar la información en conocimiento útil.
+    {% blocktrans %}Nuestros datos estan organizados y relacionados los datos entre personajes, especies, planetas y películas para mostrar cómo una base de datos bien estructurada puede transformar la información en conocimiento útil.{% endblocktrans %}
   </p>
 </section>
 
@@ -31,12 +29,12 @@
 <!-- SECCIÓN DE DATOS GALÁCTICOS -->
 <!-- ============================= -->
 <section class="stats">
-  <h2>Datos galácticos</h2>
-  <p>Nuestra base de datos actualmente incluye:</p>
+  <h2>{% trans "Datos galácticos" %}</h2>
+  <p>{% trans "Nuestra base de datos actualmente incluye:" %}</p>
   <ul class="stats-list">
-    <li><strong>{{ stats.personajes }}</strong> Personajes registrados</li>
-    <li><strong>{{ stats.especies }}</strong> Especies conocidas</li>
-    <li><strong>{{ stats.peliculas }}</strong> Películas recopiladas</li>
+    <li><strong>{{ stats.personajes }}</strong> {% trans "Personajes registrados" %}</li>
+    <li><strong>{{ stats.especies }}</strong> {% trans "Especies conocidas" %}</li>
+    <li><strong>{{ stats.peliculas }}</strong> {% trans "Películas recopiladas" %}</li>
   </ul>
 </section>
 
@@ -44,8 +42,8 @@
 <!-- SECCIÓN DE PERSONAJES DESTACADOS -->
 <!-- ============================= -->
 <section class="featured">
-  <h2>Personajes destacados por especie</h2>
-  <p>Explora un personaje representativo de cada especie conocida de la galaxia.</p>
+  <h2>{% trans "Personajes destacados por especie" %}</h2>
+  <p>{% trans "Explora un personaje representativo de cada especie conocida de la galaxia." %}</p>
 
   <div class="grid">
     {% for c in featured_characters %}
@@ -53,12 +51,12 @@
       <div class="card">
         <img src="{{ c.image_url }}" alt="{{ c.name }}">
         <h3>{{ c.name }}</h3>
-        <p><strong>Especie:</strong> {{ c.species.name }}</p>
+        <p><strong>{% trans "Especie" %}:</strong> {{ c.species.name }}</p>
         <small>{{ c.height_m }} m</small>
       </div>
       {% endif %}
     {% empty %}
-      <p>No hay personajes disponibles.</p>
+      <p>{% trans "No hay personajes disponibles." %}</p>
     {% endfor %}
   </div>
 </section>

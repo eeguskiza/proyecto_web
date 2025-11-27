@@ -1,0 +1,190 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Star Wars Site\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-02-08 00:00+0000\n"
+"PO-Revision-Date: 2025-02-08 00:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: templates/index.html:6
+msgid "Base de datos Star Wars"
+msgstr "Star Wars Database"
+
+#: templates/index.html:12
+msgid "Star Wars Site"
+msgstr "Star Wars Site"
+
+#: templates/index.html:14
+msgid "Inicio"
+msgstr "Home"
+
+#: templates/index.html:15
+msgid "Personajes"
+msgstr "Characters"
+
+#: templates/index.html:16
+msgid "Media"
+msgstr "Media"
+
+#: templates/index.html:17
+msgid "Planetas"
+msgstr "Planets"
+
+#: templates/index.html:19
+msgid "Idioma"
+msgstr "Language"
+
+#: templates/index.html:28
+msgid "© 2025 Proyecto Star Wars – Deusto"
+msgstr "© 2025 Star Wars Project – Deusto"
+
+#: templates/home.html:4
+msgid "Inicio – Star Wars Site"
+msgstr "Home – Star Wars Site"
+
+#: templates/home.html:17
+msgid "Bienvenido a <strong>Star Wars Site</strong>, una aplicación web desarrollada con la intención de explorar el universo de Star Wars de forma interactiva y visual."
+msgstr "Welcome to <strong>Star Wars Site</strong>, a web app built to explore the Star Wars universe in an interactive and visual way."
+
+#: templates/home.html:21
+msgid "Aquí podrás conocer a los personajes más emblemáticos de la saga, descubrir las especies que habitan en la galaxia, los planetas donde viven y las producciones en las que aparecen."
+msgstr "Here you can meet the saga's most iconic characters, discover the species that inhabit the galaxy, the planets they live on, and the productions they appear in."
+
+#: templates/home.html:25
+msgid "Nuestros datos estan organizados y relacionados los datos entre personajes, especies, planetas y películas para mostrar cómo una base de datos bien estructurada puede transformar la información en conocimiento útil."
+msgstr "Our data is organized linking characters, species, planets, and movies to show how a well-structured database can turn information into useful knowledge."
+
+#: templates/home.html:34
+msgid "Datos galácticos"
+msgstr "Galactic data"
+
+#: templates/home.html:35
+msgid "Nuestra base de datos actualmente incluye:"
+msgstr "Our database currently includes:"
+
+#: templates/home.html:37
+msgid "Personajes registrados"
+msgstr "Registered characters"
+
+#: templates/home.html:38
+msgid "Especies conocidas"
+msgstr "Known species"
+
+#: templates/home.html:39
+msgid "Películas recopiladas"
+msgstr "Collected films"
+
+#: templates/home.html:47
+msgid "Personajes destacados por especie"
+msgstr "Featured characters by species"
+
+#: templates/home.html:48
+msgid "Explora un personaje representativo de cada especie conocida de la galaxia."
+msgstr "Explore a representative character for every known species in the galaxy."
+
+#: templates/home.html:57
+msgid "Especie"
+msgstr "Species"
+
+#: templates/home.html:61
+msgid "No hay personajes disponibles."
+msgstr "No characters available."
+
+#: templates/characters/list.html:5
+msgid "Personajes"
+msgstr "Characters"
+
+#: templates/characters/list.html:14
+msgid "Crear Personaje"
+msgstr "Create Character"
+
+#: templates/characters/list.html:16
+msgid "Buscador galáctico"
+msgstr "Galactic search"
+
+#: templates/characters/list.html:19
+msgid "Texto libre"
+msgstr "Free text"
+
+#: templates/characters/list.html:20
+msgid "Nombre, género, color de ojos..."
+msgstr "Name, gender, eye color..."
+
+#: templates/characters/list.html:23
+#: templates/characters/list.html:63
+msgid "Especie"
+msgstr "Species"
+
+#: templates/characters/list.html:25
+msgid "Todas"
+msgstr "All"
+
+#: templates/characters/list.html:34
+msgid "Película"
+msgstr "Movie"
+
+#: templates/characters/list.html:36
+msgid "Cualquiera"
+msgstr "Any"
+
+#: templates/characters/list.html:45
+msgid "Aplicar filtros"
+msgstr "Apply filters"
+
+#: templates/characters/list.html:47
+msgid "Limpiar"
+msgstr "Clear"
+
+#: templates/characters/list.html:52
+msgid "%(total)s personajes encontrados."
+msgstr "%(total)s characters found."
+
+#: templates/characters/list.html:53
+msgid "Ver catálogo completo de especies →"
+msgstr "View full species catalog →"
+
+#: templates/characters/list.html:61
+msgid "Foto"
+msgstr "Photo"
+
+#: templates/characters/list.html:62
+msgid "Nombre"
+msgstr "Name"
+
+#: templates/characters/list.html:81
+msgid "Desconocida"
+msgstr "Unknown"
+
+#: templates/characters/list.html:85
+msgid "No se encontraron personajes con esos criterios."
+msgstr "No characters match those criteria."
+
+#: templates/errors/404.html:4
+msgid "Página no encontrada"
+msgstr "Page not found"
+
+#: templates/errors/404.html:6
+msgid "404 — Página no encontrada"
+msgstr "404 — Page not found"
+
+#: templates/errors/404.html:7
+msgid "Lo que buscas se ha ido al Lado Oscuro. Vuelve a <a href=\"%(home_url)s\">inicio</a>."
+msgstr "What you are looking for has gone to the Dark Side. Return to the <a href=\"%(home_url)s\">homepage</a>."
+
+#: templates/errors/500.html:4
+msgid "Error del servidor"
+msgstr "Server error"
+
+#: templates/errors/500.html:6
+msgid "500 — Error del servidor"
+msgstr "500 — Server error"
+
+#: templates/errors/500.html:7
+msgid "Algo ha fallado. Intenta de nuevo en un minuto."
+msgstr "Something went wrong. Please try again in a minute."

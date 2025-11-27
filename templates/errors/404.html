@@ -1,6 +1,8 @@
 {% extends "index.html" %}
-{% block title %}Página no encontrada{% endblock %}
+{% load i18n %}
+{% block title %}{% trans "Página no encontrada" %}{% endblock %}
 {% block content %}
-  <h1>404 — Página no encontrada</h1>
-  <p>Lo que buscas se ha ido al Lado Oscuro. Vuelve a <a href="{% url 'home' %}">inicio</a>.</p>
+  {% url 'home' as home_url %}
+  <h1>{% trans "404 — Página no encontrada" %}</h1>
+  <p>{% blocktrans with home_url=home_url %}Lo que buscas se ha ido al Lado Oscuro. Vuelve a <a href="{{ home_url }}">inicio</a>.{% endblocktrans %}</p>
 {% endblock %}
