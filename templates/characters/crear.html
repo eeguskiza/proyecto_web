@@ -1,10 +1,51 @@
-{% extends "home.html" %}
+{% extends "index.html" %}
+{% load static %}
+
+{% block title %}Crear Personaje – Admin{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/admin.css' %}">
+{% endblock %}
 
 {% block content %}
 <h2>Crear Personaje</h2>
-<form method="post" enctype="multipart/form-data">
+
+<form method="post" enctype="multipart/form-data" id="crear-form">
     {% csrf_token %}
-    {{ form.as_p }}
+
+    {% for field in form %}
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+        {% if field.errors %}
+            <ul class="errorlist">
+                {% for error in field.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if field.name == "name" %}
+            <div id="easter-egg">¡Hola David! 👋 Este es tu easter egg secreto 😎 puedes ponernos un 10</div>
+        {% endif %}
+    {% endfor %}
+
     <button type="submit">Crear</button>
 </form>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const nameInput = document.getElementById("id_name");
+    const easterEgg = document.getElementById("easter-egg");
+
+    if(nameInput) {
+        nameInput.addEventListener("input", function() {
+            if(nameInput.value.trim().toLowerCase() === "david") {
+                easterEgg.style.display = "block";
+            } else {
+                easterEgg.style.display = "none";
+            }
+        });
+    }
+});
+</script>
 {% endblock %}
