@@ -193,3 +193,27 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+if not DEBUG:
+    # 1. Redirección SSL
+    # Redirige todas las peticiones HTTP a HTTPS automáticamente.
+    SECURE_SSL_REDIRECT = True
+
+    # 2. Cookies Seguras
+    # Evita que las cookies de sesión y CSRF se envíen por conexiones no seguras (HTTP).
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
+    # 3. HSTS (HTTP Strict Transport Security)
+    # Avisa al navegador que, durante el tiempo definido, solo conecte por HTTPS.
+    # Recomendado: 31536000 segundos (1 año).
+    SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+
+    # 4. Proxy (SOLO SI ES NECESARIO)
+    # Si usas un proxy inverso (Nginx, Load Balancer) que maneja el SSL, descomenta esto.
+    # La doc advierte que debes entender bien tu configuración antes de activarlo.
+    # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    
+X_FRAME_OPTIONS = 'DENY'
