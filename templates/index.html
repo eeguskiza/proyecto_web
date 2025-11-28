@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <title>{% block title %}{% trans "Base de datos Star Wars" %}{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    {% block extra_meta %}{% endblock %}
     {% block extra_css %}{% endblock %}
 </head>
 <body>

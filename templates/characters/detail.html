@@ -6,9 +6,33 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/character_detail.css' %}">
 {% endblock %}
+{% block extra_meta %}
+<meta property="og:title" content="{{ personaje.name }}">
+<meta property="og:type" content="profile">
+<meta property="og:image" content="{{ personaje.image_url }}">
+<meta property="og:url" content="{{ request.build_absolute_uri }}">
+<meta property="og:description" content="Información sobre {{ personaje.name }} de Star Wars">
 
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ personaje.name }}">
+<meta name="twitter:description" content="Información sobre {{ personaje.name }} de Star Wars">
+<meta name="twitter:image" content="{{ personaje.image_url }}">
+{% endblock %}
 {% block content %}
-<div class="detalle-container-sw">
+    <script type="application/ld+json">
+        {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "{{ personaje.name }}",
+        "gender": "{{ personaje.gender|default:'Desconocido' }}",
+        "height": "{{ personaje.height_m|default:'Desconocido' }} m",
+        "weight": "{{ personaje.mass_kg|default:'Desconocido' }} kg",
+        "birthDate": "{{ personaje.birth_year_bby_aby|default:'Desconocido' }}",
+        "url": "{{ personaje.wiki_url|default:'' }}",
+        "image": "{{ personaje.image_url|default:'' }}"
+        }
+    </script>
+<div class="detalle-container-sw" itemscope itemtype="https://schema.org/Person">
 
     <div class="personaje-card">
         <!-- Imagen del personaje -->
@@ -16,25 +40,20 @@
 
         <!-- Información -->
         <div class="personaje-info">
-            <h1>{{ personaje.name }}</h1>
-            <p><strong>Especie:</strong> {{ personaje.species.name|default:"Desconocida" }}</p>
-            <p><strong>Género:</strong> {{ personaje.gender }}</p>
-            <p><strong>Altura:</strong> {{ personaje.height_m }} m</p>
-            <p><strong>Peso:</strong> {{ personaje.mass_kg }} kg</p>
+            <h1 itemprop="name">{{ personaje.name }}</h1>
+            <p><strong>Especie:</strong> <span itemprop="additionalType">{{ personaje.species.name|default:"Desconocida" }}</span></p>
+            <p><strong>Género:</strong> <span itemprop="gender">{{ personaje.gender }}</span></p>
+            <p><strong>Altura:</strong> <span itemprop="height">{{ personaje.height_m }} m</span></p>
+            <p><strong>Peso:</strong> <span itemprop="weight">{{ personaje.mass_kg }} kg</span></p>
             <p>
-              <strong>
-                {% if personaje.species.name == "droid" %}
-                  Año de construcción:
-                {% else %}
-                  Nacimiento:
-                {% endif %}
-              </strong>
-              {{ personaje.birth_year_bby_aby|default:"Desconocido" }}
+            <strong>Nacimiento:</strong> 
+            <span itemprop="birthDate">{{ personaje.birth_year_bby_aby|default:"Desconocido" }}</span>
             </p>
             {% if personaje.cybernetics %}
-            <p><strong>Cibernética:</strong> {{ personaje.cybernetics }}</p>
+            <p><strong>Cibernética:</strong> <span itemprop="description">{{ personaje.cybernetics }}</span></p>
             {% endif %}
-            <p><a href="{{ personaje.wiki_url }}" target="_blank">Ver en Wookieepedia</a></p>
+            <p><a href="{{ personaje.wiki_url }}" target="_blank" itemprop="url">Ver en Wookieepedia</a></p>
+
             <a href="{% url 'characters' %}">← Volver</a>
         </div>
     </div>
