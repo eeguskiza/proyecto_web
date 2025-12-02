@@ -1,42 +1,61 @@
-<!DOCTYPE html>
 {% load static %}
 {% load i18n %}
 {% get_current_language as LANGUAGE_CODE %}
+
+<!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}{% trans "Base de datos Star Wars" %}{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    {% block extra_meta %}{% endblock %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Star Wars Site{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/base.css' %}?v=rutas">
     {% block extra_css %}{% endblock %}
 </head>
+
 <body>
+
 <header>
     <h1>{% trans "Star Wars Site" %}</h1>
+
     <nav>
         <a href="{% url 'home' %}">{% trans "Inicio" %}</a>
         <a href="{% url 'characters' %}">{% trans "Personajes" %}</a>
         <a href="{% url 'media' %}">{% trans "Media" %}</a>
         <a href="{% url 'planets' %}">{% trans "Planetas" %}</a>
     </nav>
+
     <form action="{% url 'set_language' %}" method="post" class="language-switcher">
         {% csrf_token %}
-        <label for="language-selector">{% trans "Idioma" %}</label>
-        <select name="language" id="language-selector" onchange="this.form.submit()">
-            {% get_current_language as LANGUAGE_CODE %}
-            {% get_available_languages as LANGUAGES %}
-            {% for lang_code, lang_name in LANGUAGES %}
-                <option value="{{ lang_code }}" {% if lang_code == LANGUAGE_CODE %}selected{% endif %}>{{ lang_name }}</option>
-            {% endfor %}
-        </select>
+        <input name="next" type="hidden" value="{{ request.path }}">
+        {% get_available_languages as LANGUAGES %}
+
+        {% for lang_code, lang_name in LANGUAGES %}
+            <button type="submit" name="language" value="{{ lang_code }}"
+                    class="lang-btn {% if lang_code == LANGUAGE_CODE %}active{% endif %}"
+                    title="{{ lang_name }}">
+                
+                {% if 'es' in lang_code %}
+                    <img src="{% static 'img/banderaesp.ico' %}" alt="ES" class="lang-img">
+                {% elif 'en' in lang_code %}
+                    <img src="{% static 'img/banderaru.ico' %}" alt="EN" class="lang-img">
+                {% else %}
+                    <span class="lang-text">{{ lang_code|upper }}</span>
+                {% endif %}
+            
+            </button>
+        {% endfor %}
     </form>
 </header>
+
 <main>
     {% block content %}{% endblock %}
 </main>
+
 <footer>
-    <p>{% trans "© 2025 Proyecto Star Wars – Deusto" %}</p>
+    <p>{% trans "© 2025 Proyecto Star Wars - Deusto" %}</p>
 </footer>
+
 {% block extra_js %}{% endblock %}
+
 </body>
 </html>
