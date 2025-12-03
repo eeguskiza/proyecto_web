@@ -35,7 +35,7 @@
                 {% for character in characters %}
                     <li>
                         <a href="{% url 'detalle_personaje' character.id %}">{{ character.name }}</a>
-                        {% if character.homeworld %}<small>({{ character.homeworld.name }})</small>{% endif %}
+                        {% if character.homeworld %}<small>(<a href="{% url 'planet_detail' character.homeworld.id %}">{{ character.homeworld.name }}</a>)</small>{% endif %}
                     </li>
                 {% endfor %}
             </ul>

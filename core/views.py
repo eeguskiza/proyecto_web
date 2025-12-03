@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.views.decorators.cache import cache_page # Importación para el caché
 
 # Importaciones unificadas de tus modelos y formularios
-from .models import Character, Media, Planet, Species, StarSystem
+from .models import Affiliation, Character, Media, Planet, Species, StarSystem
 from .forms import PlanetInquiryForm, CharacterForm
 
 @login_required
@@ -92,7 +92,7 @@ def handler_500(request, template_name="errors/500.html"):
 @cache_page(60 * 15) # Añadido caché
 def detalle_personaje(request, personaje_id):
     personaje = get_object_or_404(
-        Character.objects.select_related("species", "homeworld").prefetch_related("films_and_series"),
+        Character.objects.select_related("species", "homeworld").prefetch_related("films_and_series", "affiliations"),
         id=personaje_id,
     )
     films = personaje.films_and_series.filter(media_type=Media.FILM).order_by("episode", "release_date", "title")
@@ -279,5 +279,51 @@ def planets_view(request):
             "system_options": system_options,
             "inquiry_form": inquiry_form,
             "form_success": form_success,
+        },
+    )
+
+
+@cache_page(60 * 15)
+def planet_detail(request, planet_id: int):
+    planet = get_object_or_404(
+        Planet.objects.select_related("star_system"),
+        pk=planet_id,
+    )
+    native_species = (
+        planet.native_species.all()
+        .annotate(character_count=Count("character", distinct=True))
+        .order_by("name")
+    )
+    residents = (
+        Character.objects.filter(homeworld=planet)
+        .select_related("species")
+        .order_by("name")
+    )
+    return render(
+        request,
+        "planets/detail.html",
+        {
+            "planet": planet,
+            "native_species": native_species,
+            "residents": residents,
+        },
+    )
+
+
+@cache_page(60 * 15)
+def affiliation_detail(request, affiliation_id: int):
+    affiliation = get_object_or_404(Affiliation, pk=affiliation_id)
+    members = (
+        Character.objects.filter(affiliations=affiliation)
+        .select_related("species", "homeworld")
+        .distinct()
+        .order_by("name")
+    )
+    return render(
+        request,
+        "affiliations/detail.html",
+        {
+            "affiliation": affiliation,
+            "members": members,
         },
     )

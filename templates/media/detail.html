@@ -38,7 +38,7 @@
                 {% for character in cast %}
                     <li>
                         <a href="{% url 'detalle_personaje' character.id %}">{{ character.name }}</a>
-                        {% if character.species %}<small>({{ character.species.name }})</small>{% endif %}
+                        {% if character.species %}<small>(<a href="{% url 'species_detail' character.species.id %}">{{ character.species.name }}</a>)</small>{% endif %}
                     </li>
                 {% endfor %}
             </ul>

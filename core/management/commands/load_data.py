@@ -61,10 +61,12 @@ class Command(BaseCommand):
             "--skip-swapi",
             action="store_true",
             help="Omitir la descarga y el enriquecimiento desde SWAPI.",
-        )
+    )
 
     def handle(self, *args, **options):
         self._swapi_cache = {}
+        self._planet_data_cache = {}
+        self._payload_cache = {}
 
         if not options.get("skip_akabab"):
             self.stdout.write("1) Cargando dataset local de akabab...")
@@ -100,7 +102,10 @@ class Command(BaseCommand):
             self.stdout.write(
                 self.style.SUCCESS(
                     "   ✔ Media films creados {media_created}, actualizados {media_updated} | "
-                    "Apariciones añadidas +{appearance_links} | Personas sin match {missing_people} | "
+                    "Apariciones añadidas +{appearance_links} | "
+                    "Especies creadas {species_created}, actualizadas {species_updated}, homeworlds enlazados +{species_homeworld_links} | "
+                    "Personajes con especie asignada +{characters_species_linked} | "
+                    "Personas sin match {missing_people} | "
                     "Planetas enriquecidos +{planets_enriched}, homeworlds asignados +{homeworld_links}".format(
                         **stats
                     )
@@ -283,7 +288,36 @@ class Command(BaseCommand):
             missing_people=0,
             planets_enriched=0,
             homeworld_links=0,
+            species_created=0,
+            species_updated=0,
+            species_homeworld_links=0,
+            characters_species_linked=0,
         )
+
+        species_data = self._get_all(f"{SWAPI_ROOT}/species/")
+        species_by_url = {}
+
+        for item in species_data:
+            name = self._norm_str(item.get("name"))
+            if not name:
+                continue
+
+            defaults = {
+                "classification": self._none_if_unknown(item.get("classification")),
+                "designation": self._none_if_unknown(item.get("designation")),
+                "language": self._none_if_unknown(item.get("language")),
+            }
+
+            species_obj = self._get_or_update_species(name, defaults, stats)
+            species_by_url[item.get("url")] = species_obj
+
+            planet = self._get_planet_by_url(item.get("homeworld"))
+            if planet:
+                _, link_created = PlanetSpecies.objects.get_or_create(
+                    planet=planet, species=species_obj
+                )
+                if link_created:
+                    stats["species_homeworld_links"] += 1
 
         films = self._get_all(f"{SWAPI_ROOT}/films/")
         film_by_url = {}
@@ -340,6 +374,14 @@ class Command(BaseCommand):
                     stats["appearance_links"] += 1
 
             stats = self._maybe_enrich_planet(person, character=character, stats=stats)
+            if character and not character.species:
+                for species_url in person.get("species") or []:
+                    species_obj = species_by_url.get(species_url)
+                    if species_obj:
+                        character.species = species_obj
+                        character.save(update_fields=["species"])
+                        stats["characters_species_linked"] += 1
+                        break
 
         return stats
 
@@ -351,13 +393,7 @@ class Command(BaseCommand):
         if not hw_url or not isinstance(hw_url, str):
             return stats
 
-        try:
-            response = requests.get(hw_url, timeout=30)
-            response.raise_for_status()
-        except requests.RequestException:
-            return stats
-
-        planet_data = response.json()
+        planet_data = self._get_planet_data(hw_url)
         planet_name = planet_data.get("name")
         if not planet_name:
             return stats
@@ -413,24 +449,94 @@ class Command(BaseCommand):
             return []
         names = []
         for url in url_list:
-            cached = self._swapi_cache.get(url)
-            if cached is not None:
-                if cached:
-                    names.append(cached)
+            name = self._swapi_cache.get(url)
+            if name is not None:
+                if name:
+                    names.append(name)
                 continue
-            try:
-                response = requests.get(url, timeout=10)
-                if response.status_code == 200:
-                    data = response.json()
-                    name = data.get("name") or data.get("title")
-                    self._swapi_cache[url] = name
-                    if name:
-                        names.append(name)
-                    continue
-            except requests.RequestException:
-                pass
+
+            data = self._get_swapi_payload(url)
+            if data:
+                name = data.get("name") or data.get("title")
+                self._swapi_cache[url] = name
+                if name:
+                    names.append(name)
+                continue
+
             self._swapi_cache[url] = None
         return names
+
+    def _get_planet_by_url(self, planet_url):
+        if not planet_url:
+            return None
+        planet_data = self._get_planet_data(planet_url)
+        planet_name = planet_data.get("name")
+        if not planet_name:
+            return None
+        try:
+            return Planet.objects.get(name=planet_name)
+        except Planet.DoesNotExist:
+            return None
+
+    def _get_planet_data(self, planet_url):
+        if not planet_url:
+            return {}
+        if planet_url in self._planet_data_cache:
+            return self._planet_data_cache[planet_url]
+
+        payload = self._get_swapi_payload(planet_url, timeout=30) or {}
+        self._planet_data_cache[planet_url] = payload
+        return payload
+
+    def _get_swapi_payload(self, url, timeout=10):
+        if not url:
+            return None
+        if url in self._payload_cache:
+            return self._payload_cache[url]
+        try:
+            response = requests.get(url, timeout=timeout)
+            response.raise_for_status()
+            data = response.json()
+            self._payload_cache[url] = data
+            return data
+        except requests.RequestException:
+            self._payload_cache[url] = None
+            return None
+
+    def _get_or_update_species(self, name, defaults, stats):
+        qs = Species.objects.filter(name__iexact=name)
+        species_obj = qs.first()
+
+        if species_obj:
+            duplicates = list(qs[1:])
+            if duplicates:
+                for dup in duplicates:
+                    Character.objects.filter(species=dup).update(species=species_obj)
+                    for link in PlanetSpecies.objects.filter(species=dup):
+                        PlanetSpecies.objects.get_or_create(
+                            planet=link.planet, species=species_obj
+                        )
+                    PlanetSpecies.objects.filter(species=dup).delete()
+                    dup.delete()
+
+            updated_fields = []
+            for field, value in defaults.items():
+                if value and getattr(species_obj, field) != value:
+                    setattr(species_obj, field, value)
+                    updated_fields.append(field)
+
+            if species_obj.name != name:
+                species_obj.name = name
+                updated_fields.append("name")
+
+            if updated_fields:
+                species_obj.save(update_fields=updated_fields)
+                stats["species_updated"] += 1
+            return species_obj
+
+        species_obj = Species.objects.create(name=name, **defaults)
+        stats["species_created"] += 1
+        return species_obj
 
     @staticmethod
     def _norm_str(value):

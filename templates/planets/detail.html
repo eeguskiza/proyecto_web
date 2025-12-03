@@ -1,0 +1,57 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}{{ planet.name }} – Planeta{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/planets.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="planet-section">
+    <p class="back-link"><a href="{% url 'planets' %}">← Volver al catálogo de planetas</a></p>
+    <div class="planet-card">
+        <h2>{{ planet.name }}</h2>
+        <p><strong>Clima:</strong> {{ planet.climate|default:"Sin dato" }}</p>
+        <p><strong>Terreno:</strong> {{ planet.terrain|default:"Sin dato" }}</p>
+        <p><strong>Población:</strong> {{ planet.population|default:"Sin dato" }}</p>
+        <p><strong>Sistema estelar:</strong> {{ planet.star_system.name|default:"Sin dato" }}</p>
+        {% if planet.capital_city %}<p><strong>Capital:</strong> {{ planet.capital_city }}</p>{% endif %}
+        {% if planet.grid_coordinates %}<p><strong>Coordenadas:</strong> {{ planet.grid_coordinates }}</p>{% endif %}
+    </div>
+
+    <div class="planet-container">
+        <div class="planet-card">
+            <h3>Especies nativas</h3>
+            {% if native_species %}
+                <ul>
+                    {% for specie in native_species %}
+                        <li>
+                            <a href="{% url 'species_detail' specie.id %}">{{ specie.name }}</a>
+                            <small>({{ specie.character_count }} personajes)</small>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No hay especies vinculadas.</p>
+            {% endif %}
+        </div>
+
+        <div class="planet-card">
+            <h3>Personajes originarios</h3>
+            {% if residents %}
+                <ul>
+                    {% for character in residents %}
+                        <li>
+                            <a href="{% url 'detalle_personaje' character.id %}">{{ character.name }}</a>
+                            {% if character.species %}<small>({{ character.species.name }})</small>{% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No hay personajes registrados para este planeta.</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

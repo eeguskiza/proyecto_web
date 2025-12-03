@@ -14,6 +14,8 @@ urlpatterns = [
     path("species/<int:species_id>/", views.species_detail, name="species_detail"),
     path("species/", views.species_list, name="species_list"),
     path("planets/", views.planets_view, name="planets"),
+    path("planets/<int:planet_id>/", views.planet_detail, name="planet_detail"),
+    path("affiliations/<int:affiliation_id>/", views.affiliation_detail, name="affiliation_detail"),
     path("characters/crear/", views.crear_personaje, name="crear_personaje"),
     
 ]

@@ -51,7 +51,7 @@
       <div class="card">
         <img src="{{ c.image_url }}" alt="{{ c.name }}">
         <h3>{{ c.name }}</h3>
-        <p><strong>{% trans "Especie" %}:</strong> {{ c.species.name }}</p>
+        <p><strong>{% trans "Especie" %}:</strong> <a href="{% url 'species_detail' c.species.id %}">{{ c.species.name }}</a></p>
         <small>{{ c.height_m }} m</small>
       </div>
       {% endif %}

@@ -41,7 +41,24 @@
         <!-- Información -->
         <div class="personaje-info">
             <h1 itemprop="name">{{ personaje.name }}</h1>
-            <p><strong>Especie:</strong> <span itemprop="additionalType">{{ personaje.species.name|default:"Desconocida" }}</span></p>
+            <p>
+                <strong>Especie:</strong>
+                <span itemprop="additionalType">
+                    {% if personaje.species %}
+                        <a href="{% url 'species_detail' personaje.species.id %}">{{ personaje.species.name }}</a>
+                    {% else %}
+                        Desconocida
+                    {% endif %}
+                </span>
+            </p>
+            <p>
+                <strong>Planeta natal:</strong>
+                {% if personaje.homeworld %}
+                    <a href="{% url 'planet_detail' personaje.homeworld.id %}">{{ personaje.homeworld.name }}</a>
+                {% else %}
+                    Desconocido
+                {% endif %}
+            </p>
             <p><strong>Género:</strong> <span itemprop="gender">{{ personaje.gender }}</span></p>
             <p><strong>Altura:</strong> <span itemprop="height">{{ personaje.height_m }} m</span></p>
             <p><strong>Peso:</strong> <span itemprop="weight">{{ personaje.mass_kg }} kg</span></p>
@@ -57,6 +74,17 @@
             <a href="{% url 'characters' %}">← Volver</a>
         </div>
     </div>
+
+    <section class="filmography">
+        <h2>Afiliaciones</h2>
+        <ul>
+            {% for affiliation in personaje.affiliations.all %}
+                <li><a href="{% url 'affiliation_detail' affiliation.id %}">{{ affiliation.name }}</a></li>
+            {% empty %}
+                <li>No hay afiliaciones registradas.</li>
+            {% endfor %}
+        </ul>
+    </section>
 
     <section class="filmography">
         <h2>Filmografía</h2>

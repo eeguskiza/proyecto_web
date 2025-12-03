@@ -59,7 +59,7 @@
     <div class="planet-container">
         {% for planet in planets %}
             <div class="planet-card">
-                <h4>{{ planet.name }}</h4>
+                <h4><a href="{% url 'planet_detail' planet.id %}">{{ planet.name }}</a></h4>
                 <p><strong>Clima:</strong> {{ planet.display_climate }}</p>
                 <p><strong>Terreno:</strong> {{ planet.display_terrain }}</p>
                 <p><strong>Población:</strong> {{ planet.display_population }}</p>

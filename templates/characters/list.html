@@ -79,7 +79,13 @@
                     <td>
                         <a href="{% url 'detalle_personaje' personaje.id %}">{{ personaje.name }}</a>
                     </td>
-                    <td>{{ personaje.species.name|default:_("Desconocida") }}</td>
+                    <td>
+                        {% if personaje.species %}
+                            <a href="{% url 'species_detail' personaje.species.id %}">{{ personaje.species.name }}</a>
+                        {% else %}
+                            {% trans "Desconocida" %}
+                        {% endif %}
+                    </td>
                 </tr>
                 {% empty %}
                 <tr>

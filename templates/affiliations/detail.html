@@ -1,0 +1,28 @@
+{% extends 'index.html' %}
+
+{% block title %}{{ affiliation.name }} – Afiliación{% endblock %}
+
+{% block content %}
+<section class="species-detail">
+    <p class="back-link"><a href="javascript:history.back()">← Volver</a></p>
+    <h1>{{ affiliation.name }}</h1>
+    <p><strong>Categoría:</strong> {{ affiliation.category|default:"Sin dato" }}</p>
+
+    <section class="species-characters">
+        <h2>Miembros</h2>
+        {% if members %}
+            <ul>
+                {% for member in members %}
+                    <li>
+                        <a href="{% url 'detalle_personaje' member.id %}">{{ member.name }}</a>
+                        {% if member.species %}<small>({{ member.species.name }})</small>{% endif %}
+                        {% if member.homeworld %}<small> – {{ member.homeworld.name }}</small>{% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No hay personajes asociados a esta afiliación.</p>
+        {% endif %}
+    </section>
+</section>
+{% endblock %}
