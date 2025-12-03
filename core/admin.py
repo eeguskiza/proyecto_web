@@ -35,14 +35,7 @@ class CharacterAdmin(admin.ModelAdmin):
         return ", ".join([a.name for a in obj.affiliations.all()])
     display_affiliations.short_description = "Affiliations"
     
-    # Control de permisos: ocultar campos para usuarios no superuser
-    def get_fields(self, request, obj=None):
-        fields = ["name", "species", "homeworld", "gender", "image_url"]
-        if request.user.is_superuser:
-            fields.append("secret_notes")  # solo visible para superusers
-        return fields
-    
-    # También se pueden quitar columnas según el usuario
+    # Control de permisos: ocultar columnas para usuarios no superuser
     def get_list_display(self, request):
         columns = list(self.list_display)
         if not request.user.is_superuser:

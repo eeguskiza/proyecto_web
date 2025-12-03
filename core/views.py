@@ -3,7 +3,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import TemplateView
 from django.contrib.auth.decorators import login_required, permission_required
 from django.views.decorators.cache import cache_page # Importación para el caché
-from django.utils.decorators import method_decorator # Necesario para cachear Clases (HomeView)
 
 # Importaciones unificadas de tus modelos y formularios
 from .models import Character, Media, Planet, Species, StarSystem
@@ -24,8 +23,6 @@ def crear_personaje(request):
     return render(request, "characters/crear.html", {"form": form})
 
 
-# Cacheamos la HomeView usando method_decorator (porque es una Clase)
-@method_decorator(cache_page(60 * 15), name='dispatch')
 class HomeView(TemplateView):
     template_name = "home.html"
 

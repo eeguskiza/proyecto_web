@@ -142,12 +142,6 @@ class Character(models.Model):
     def __str__(self):
         return self.name
 
-    class Meta:
-        ordering = ["name"]
-
-    def __str__(self):
-        return self.name
-
 
 class Appearance(models.Model):
     character = models.ForeignKey(Character, on_delete=models.CASCADE)
