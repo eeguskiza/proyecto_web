@@ -204,6 +204,8 @@ LOCALE_PATHS = [BASE_DIR / 'locale']
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
+# Ruta destino para collectstatic (útil en despliegues tipo Render/Heroku)
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
 # Default primary key field type

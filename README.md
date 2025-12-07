@@ -129,8 +129,8 @@ export DJANGO_SECRET_KEY='cambia-esta-clave'
 export DJANGO_DEBUG=false
 export DJANGO_ALLOWED_HOSTS='midominio.com,www.midominio.com'
 export DJANGO_CSRF_TRUSTED_ORIGINS='https://midominio.com,https://www.midominio.com'
-python manage.py collectstatic --noinput  # si usas almacenamiento estático
 python manage.py migrate
+python manage.py collectstatic --noinput  # STATIC_ROOT apunta a staticfiles/
 python manage.py runserver 0.0.0.0:8000
 ```
 
