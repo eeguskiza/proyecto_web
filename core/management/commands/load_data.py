@@ -12,6 +12,7 @@ Cada etapa puede ejecutarse de forma independiente con flags opcionales.
 
 import csv
 import json
+import os
 import re
 from datetime import datetime
 from pathlib import Path
@@ -67,6 +68,7 @@ class Command(BaseCommand):
         self._swapi_cache = {}
         self._planet_data_cache = {}
         self._payload_cache = {}
+        load_swapi_enabled = os.getenv("LOAD_SWAPI_ENABLED", "true").lower() == "true"
 
         if not options.get("skip_akabab"):
             self.stdout.write("1) Cargando dataset local de akabab...")
@@ -96,23 +98,32 @@ class Command(BaseCommand):
         else:
             self.stdout.write("2) Catálogo de planetas omitido (flag --skip-planets).")
 
-        if not options.get("skip_swapi"):
+        if not options.get("skip_swapi") and load_swapi_enabled:
             self.stdout.write("3) Enriqueciendo con films y personajes de SWAPI...")
-            stats = self._enrich_from_swapi()
-            self.stdout.write(
-                self.style.SUCCESS(
-                    "   ✔ Media films creados {media_created}, actualizados {media_updated} | "
-                    "Apariciones añadidas +{appearance_links} | "
-                    "Especies creadas {species_created}, actualizadas {species_updated}, homeworlds enlazados +{species_homeworld_links} | "
-                    "Personajes con especie asignada +{characters_species_linked} | "
-                    "Personas sin match {missing_people} | "
-                    "Planetas enriquecidos +{planets_enriched}, homeworlds asignados +{homeworld_links}".format(
-                        **stats
+            try:
+                stats = self._enrich_from_swapi()
+                self.stdout.write(
+                    self.style.SUCCESS(
+                        "   ✔ Media films creados {media_created}, actualizados {media_updated} | "
+                        "Apariciones añadidas +{appearance_links} | "
+                        "Especies creadas {species_created}, actualizadas {species_updated}, homeworlds enlazados +{species_homeworld_links} | "
+                        "Personajes con especie asignada +{characters_species_linked} | "
+                        "Personas sin match {missing_people} | "
+                        "Planetas enriquecidos +{planets_enriched}, homeworlds asignados +{homeworld_links}".format(
+                            **stats
+                        )
                     )
                 )
-            )
+            except CommandError as exc:
+                self.stdout.write(
+                    self.style.WARNING(
+                        f"3) Enriquecimiento SWAPI omitido por error: {exc}"
+                    )
+                )
         else:
-            self.stdout.write("3) Enriquecimiento SWAPI omitido (flag --skip-swapi).")
+            self.stdout.write(
+                "3) Enriquecimiento SWAPI omitido (flag --skip-swapi o LOAD_SWAPI_ENABLED=false)."
+            )
 
     # ------------------------------------------------------------------
     # Etapa 1: dataset akabab

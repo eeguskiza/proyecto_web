@@ -122,6 +122,7 @@ Acceso al admin: `http://127.0.0.1:8000/admin`
 - `DJANGO_DEBUG`: `false` en producción.
 - `DJANGO_ALLOWED_HOSTS`: lista separada por comas de hosts/DOMINIOS permitidos.
 - `DJANGO_CSRF_TRUSTED_ORIGINS`: orígenes (con esquema) para CSRF en reversas/proxy.
+- `LOAD_SWAPI_ENABLED`: ponlo a `false` si el entorno bloquea SWAPI y quieres que `load_data` no falle (seguirá cargando el JSON local y el CSV).
 
 Ejemplo:
 ```bash
@@ -129,6 +130,7 @@ export DJANGO_SECRET_KEY='cambia-esta-clave'
 export DJANGO_DEBUG=false
 export DJANGO_ALLOWED_HOSTS='midominio.com,www.midominio.com'
 export DJANGO_CSRF_TRUSTED_ORIGINS='https://midominio.com,https://www.midominio.com'
+export LOAD_SWAPI_ENABLED=false  # opcional si SWAPI da 403 en CI/host
 python manage.py migrate
 python manage.py collectstatic --noinput  # STATIC_ROOT apunta a staticfiles/
 python manage.py runserver 0.0.0.0:8000
