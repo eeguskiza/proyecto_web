@@ -1,0 +1,28 @@
+### static/css/planets.css
+
+### static/css/characters.css
+
+### static/css/chatbot.css
+
+### static/css/species.css
+
+### static/css/admin.css
+
+### static/css/home.css
+
+### static/css/media.css
+static/css/media.css:27:
+    “::-webkit-scrollbar” is a vendor extended pseudo-element
+static/css/media.css:31:
+    “::-webkit-scrollbar-track” is a vendor extended pseudo-element
+static/css/media.css:37:
+    “::-webkit-scrollbar-thumb” is a vendor extended pseudo-element
+
+### static/css/chat_page.css
+
+### static/css/base.css
+static/css/base.css:86:
+    The property “clip” is deprecated
+
+### static/css/character_detail.css
+

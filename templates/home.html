@@ -6,6 +6,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/home.css' %}">
+<link rel="stylesheet" href="{% static 'css/chatbot.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -61,4 +62,23 @@
   </div>
 </section>
 
+<!-- ============================= -->
+<!-- CHATBOT EXPLORADOR -->
+<!-- ============================= -->
+<section class="chatbot" data-endpoint="{% url 'chatbot_search' %}">
+  <div class="chat-hero">
+    <h2>Explora personajes con el asistente</h2>
+    <p>Pregunta por un personaje o especie y te muestro lo que sabemos.</p>
+  </div>
+  <div class="chat-log"></div>
+  <form class="chat-input">
+    <input type="search" name="q" placeholder="Ej: Quién es el maestro pequeño y verde..." autocomplete="off">
+    <button type="submit">Preguntar</button>
+  </form>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/chatbot.js' %}"></script>
 {% endblock %}

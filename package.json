@@ -1,0 +1,11 @@
+{
+  "name": "star-wars-site",
+  "private": true,
+  "devDependencies": {
+    "html-validator-cli": "^7.0.1",
+    "css-validator": "^0.11.0"
+  },
+  "scripts": {
+    "validate:w3c": "bash scripts/validate.sh"
+  }
+}

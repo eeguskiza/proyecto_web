@@ -1,0 +1,127 @@
+/* Contenedor general */
+.chatbot {
+    position: relative;
+    width: 95%;
+    max-width: 1300px;
+    margin: 40px auto;
+    background: rgba(10, 10, 15, 0.8);
+    border: 1px solid #222;
+    border-radius: 16px;
+    padding: 32px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.45);
+    transition: transform 0.6s ease, max-width 0.6s ease, box-shadow 0.6s ease, width 0.6s ease;
+    overflow: hidden;
+}
+
+.chatbot.docked {
+    max-width: 1300px;
+    transform: none;
+}
+
+.chat-hero {
+    text-align: center;
+    margin-bottom: 20px;
+    transition: opacity 0.4s ease, transform 0.4s ease, max-height 0.4s ease;
+}
+
+.chat-hero.collapsed {
+    opacity: 0;
+    transform: translateY(-10px);
+    max-height: 0;
+}
+
+.chat-input {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid #333;
+    background: rgba(255, 255, 255, 0.06);
+    color: #f5f5f5;
+}
+
+.chat-input button {
+    padding: 12px 18px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg, #4fb0ff, #2d7eff);
+    color: #0a0a0f;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.chat-input button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(0, 122, 255, 0.35);
+}
+
+.chat-log {
+    max-height: 70vh;
+    min-height: 320px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-right: 6px;
+}
+
+.chat-bubble {
+    padding: 12px 14px;
+    border-radius: 12px;
+    animation: fadeSlideIn 0.25s ease forwards;
+}
+
+.chat-bubble.user {
+    align-self: flex-end;
+    background: #1c2a3f;
+    border: 1px solid #2f3c52;
+}
+
+.chat-bubble.bot {
+    align-self: flex-start;
+    background: #111;
+    border: 1px solid #222;
+}
+
+.chat-thumb {
+    width: 96px;
+    height: 96px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-right: 10px;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.45);
+}
+
+.chat-card-text {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.chat-bubble small {
+    display: block;
+    color: #9ca3af;
+}
+
+@keyframes fadeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(6px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .chatbot, .chatbot.docked {
+        max-width: 100%;
+        transform: none;
+    }
+}

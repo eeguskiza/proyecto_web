@@ -1,0 +1,324 @@
+### templates/characters/crear.html
+Error: Non-space characters found without seeing a doctype first. Expected “<!DOCTYPE html>”.
+From line 1, column 1; to line 6, column 22
+Error: Element “head” is missing a required instance of child element “title”.
+From line 1, column 1; to line 6, column 22
+Error: Bad value “{% static 'css/admin.css' %}” for attribute “href” on element “link”: Illegal character in path segment: “{” is not allowed.
+From line 7, column 1; to line 7, column 59
+Error: Bad value “{{ field.id_for_label }}” for attribute “for” on element “label”: An ID must not contain whitespace.
+From line 17, column 9; to line 17, column 46
+Error: Text not allowed in element “ul” in this context.
+From line 20, column 35; to line 22, column 20
+Error: Text not allowed in element “ul” in this context.
+From line 22, column 41; to line 24, column 12
+Error: The value of the “for” attribute of the “label” element must be the ID of a non-hidden form control.
+From line 17, column 9; to line 17, column 46
+Warning: Consider adding a “lang” attribute to the “html” start tag to declare the language of this document.
+From line 1, column 1; to line 6, column 22
+There were errors.
+
+
+### templates/characters/detail.html
+Error: Non-space characters found without seeing a doctype first. Expected “<!DOCTYPE html>”.
+From line 1, column 1; to line 6, column 22
+Error: Element “head” is missing a required instance of child element “title”.
+From line 1, column 1; to line 6, column 22
+Error: Bad value “{% static 'css/character_detail.css' %}” for attribute “href” on element “link”: Illegal character in path segment: “{” is not allowed.
+From line 7, column 1; to line 7, column 70
+Error: Attribute “name” not allowed on element “meta” at this point.
+From line 16, column 1; to line 16, column 56
+Error: Element “meta” is missing one or more of the following attributes: “itemprop”, “property”.
+From line 16, column 1; to line 16, column 56
+Error: Attribute “name” not allowed on element “meta” at this point.
+From line 17, column 1; to line 17, column 58
+Error: Element “meta” is missing one or more of the following attributes: “itemprop”, “property”.
+From line 17, column 1; to line 17, column 58
+Error: Attribute “name” not allowed on element “meta” at this point.
+From line 18, column 1; to line 18, column 95
+Error: Element “meta” is missing one or more of the following attributes: “itemprop”, “property”.
+From line 18, column 1; to line 18, column 95
+Error: Attribute “name” not allowed on element “meta” at this point.
+From line 19, column 1; to line 19, column 63
+Error: Element “meta” is missing one or more of the following attributes: “itemprop”, “property”.
+From line 19, column 1; to line 19, column 63
+Error: Bad value “{{ personaje.image_url }}” for attribute “src” on element “img”: Illegal character in path segment: “{” is not allowed.
+From line 39, column 9; to line 39, column 72
+Error: Bad value “{% url 'species_detail' personaje.species.id %}” for attribute “href” on element “a”: Illegal character in path segment: “{” is not allowed.
+From line 48, column 25; to line 48, column 82
+Error: Bad value “{% url 'planet_detail' personaje.homeworld.id %}” for attribute “href” on element “a”: Illegal character in path segment: “{” is not allowed.
+From line 57, column 21; to line 57, column 79
+Error: Bad value “{{ personaje.wiki_url }}” for attribute “href” on element “a”: Illegal character in path segment: “{” is not allowed.
+From line 72, column 16; to line 72, column 81
+Error: Bad value “{% url 'characters' %}” for attribute “href” on element “a”: Illegal character in path segment: “{” is not allowed.
+From line 74, column 13; to line 74, column 45
+Error: Text not allowed in element “ul” in this context.
+From line 80, column 13; to line 82, column 16
+Error: Bad value “{% url 'affiliation_detail' affiliation.id %}” for attribute “href” on element “a”: Illegal character in path segment: “{” is not allowed.
+From line 82, column 21; to line 82, column 76
+Error: Text not allowed in element “ul” in this context.
+From line 82, column 108; to line 84, column 16
+Error: Text not allowed in element “ul” in this context.
+From line 84, column 58; to line 86, column 8
+Error: Text not allowed in element “ul” in this context.
+From line 92, column 17; to line 94, column 20
+Error: Bad value “{% url 'media_detail' film.id %}” for attribute “href” on element “a”: Illegal character in path segment: “{” is not allowed.
+From line 95, column 25; to line 95, column 67
+Error: Text not allowed in element “ul” in this context.
+From line 97, column 26; to line 99, column 12
+Warning: Consider adding a “lang” attribute to the “html” start tag to declare the language of this document.
+From line 1, column 1; to line 6, column 22
+There were errors.
+
+
+### templates/characters/list.html
+Error: Non-space characters found without seeing a doctype first. Expected “<!DOCTYPE html>”.
+From line 1, column 1; to line 7, column 22
+Error: Element “head” is missing a required instance of child element “title”.
+From line 1, column 1; to line 7, column 22
+Error: Bad value “{% static 'css/characters.css' %}” for attribute “href” on element “link”: Illegal character in path segment: “{” is not allowed.
+From line 8, column 1; to line 8, column 64
+Error: Bad value “{% url 'crear_personaje' %}” for attribute “href” on element “a”: Illegal character in path segment: “{” is not allowed.
+From line 15, column 9; to line 15, column 70
+Error: Text not allowed in element “select” in this context.
+From line 26, column 66; to line 27, column 43
+Error: Text not allowed in element “select” in this context.
+From line 27, column 44; to line 28, column 24
+Error: “=” at the start of an unquoted attribute value. Probable cause: Stray duplicate equals sign.
+At line 28, column 81
+Error: Quote “"” in attribute name. Probable cause: Matching quote missing somewhere earlier.
+At line 28, column 107
+Error: Quote “"” in attribute name. Probable cause: Matching quote missing somewhere earlier.
+At line 28, column 109
+Warning: Attribute “{%” is not serializable as XML 1.0.
+From line 28, column 25; to line 28, column 132
+Warning: Attribute “especie.id|stringformat:"s"” is not serializable as XML 1.0.
+From line 28, column 25; to line 28, column 132
+Warning: Attribute “%}selected{%” is not serializable as XML 1.0.
+From line 28, column 25; to line 28, column 132
+Warning: Attribute “%}” is not serializable as XML 1.0.
+From line 28, column 25; to line 28, column 132
+Error: Attribute “{%” not allowed on element “option” at this point.
+From line 28, column 25; to line 28, column 132
+Error: Attribute “if” not allowed on element “option” at this point.
+From line 28, column 25; to line 28, column 132
+Error: Attribute “filters.species” not allowed on element “option” at this point.
+From line 28, column 25; to line 28, column 132
+Error: Attribute “especie.id|stringformat:"s"” not allowed on element “option” at this point.
+From line 28, column 25; to line 28, column 132
+Error: Attribute “%}selected{%” not allowed on element “option” at this point.
+From line 28, column 25; to line 28, column 132
+Error: Attribute “endif” not allowed on element “option” at this point.
+From line 28, column 25; to line 28, column 132
+Error: Attribute “%}” not allowed on element “option” at this point.
+From line 28, column 25; to line 28, column 132
+Error: Text not allowed in element “select” in this context.
+From line 30, column 34; to line 32, column 16
+Error: Text not allowed in element “select” in this context.
+From line 37, column 71; to line 39, column 24
+Error: “=” at the start of an unquoted attribute value. Probable cause: Stray duplicate equals sign.
+At line 39, column 76
+Error: Quote “"” in attribute name. Probable cause: Matching quote missing somewhere earlier.
+At line 39, column 99
+Error: Quote “"” in attribute name. Probable cause: Matching quote missing somewhere earlier.
+At line 39, column 101
+Warning: Attribute “{%” is not serializable as XML 1.0.
+From line 39, column 25; to line 39, column 124
+Warning: Attribute “film.id|stringformat:"s"” is not serializable as XML 1.0.
+From line 39, column 25; to line 39, column 124
+Warning: Attribute “%}selected{%” is not serializable as XML 1.0.
+From line 39, column 25; to line 39, column 124
+Warning: Attribute “%}” is not serializable as XML 1.0.
+From line 39, column 25; to line 39, column 124
+Error: Attribute “{%” not allowed on element “option” at this point.
+From line 39, column 25; to line 39, column 124
+Error: Attribute “if” not allowed on element “option” at this point.
+From line 39, column 25; to line 39, column 124
+Error: Attribute “filters.media” not allowed on element “option” at this point.
+From line 39, column 25; to line 39, column 124
+Error: Attribute “film.id|stringformat:"s"” not allowed on element “option” at this point.
+From line 39, column 25; to line 39, column 124
+Error: Attribute “%}selected{%” not allowed on element “option” at this point.
+From line 39, column 25; to line 39, column 124
+Error: Attribute “endif” not allowed on element “option” at this point.
+From line 39, column 25; to line 39, column 124
+Error: Attribute “%}” not allowed on element “option” at this point.
+From line 39, column 25; to line 39, column 124
+Error: Text not allowed in element “select” in this context.
+From line 41, column 34; to line 43, column 16
+Error: Bad value “{% url 'characters' %}” for attribute “href” on element “a”: Illegal character in path segment: “{” is not allowed.
+From line 48, column 21; to line 48, column 72
+Error: Bad value “{% url 'species_list' %}” for attribute “href” on element “a”: Illegal character in path segment: “{” is not allowed.
+From line 54, column 13; to line 54, column 66
+Error: Misplaced non-space characters inside a table.
+From line 67, column 20; to line 69, column 20
+Fatal Error: Cannot recover after last error. Any further errors will be ignored.
+From line 67, column 20; to line 69, column 20
+There were errors.
+
+
+### templates/index.html
+Error: Non-space characters found without seeing a doctype first. Expected “<!DOCTYPE html>”.
+From line 1, column 1; to line 4, column 1
+Error: Element “head” is missing a required instance of child element “title”.
+From line 1, column 1; to line 4, column 1
+Error: Stray doctype.
+From line 5, column 1; to line 5, column 15
+Error: Stray start tag “html”.
+From line 6, column 1; to line 6, column 33
+Fatal Error: Cannot recover after last error. Any further errors will be ignored.
+From line 6, column 1; to line 6, column 33
+There were errors.
+
+
+### templates/species/detail.html
+Error: Non-space characters found without seeing a doctype first. Expected “<!DOCTYPE html>”.
+From line 1, column 1; to line 6, column 22
+Error: Element “head” is missing a required instance of child element “title”.
+From line 1, column 1; to line 6, column 22
+Error: Bad value “{% static 'css/species.css' %}” for attribute “href” on element “link”: Illegal character in path segment: “{” is not allowed.
+From line 7, column 1; to line 7, column 61
+Error: Bad value “{% url 'species_list' %}” for attribute “href” on element “a”: Illegal character in path segment: “{” is not allowed.
+From line 13, column 30; to line 13, column 64
+Error: Text not allowed in element “ul” in this context.
+From line 35, column 15; to line 36, column 20
+Error: Bad value “{% url 'detalle_personaje' character.id %}” for attribute “href” on element “a”: Illegal character in path segment: “{” is not allowed.
+From line 37, column 25; to line 37, column 77
+Error: Bad value “{% url 'planet_detail' character.homeworld.id %}” for attribute “href” on element “a”: Illegal character in path segment: “{” is not allowed.
+From line 38, column 61; to line 38, column 119
+Error: Text not allowed in element “ul” in this context.
+From line 39, column 26; to line 41, column 12
+Warning: Consider adding a “lang” attribute to the “html” start tag to declare the language of this document.
+From line 1, column 1; to line 6, column 22
+There were errors.
+
+
+### templates/species/list.html
+Error: Validator returned unexpected statuscode: 429
+    at Request._callback (/home/eeguskiza/proyecto_web/node_modules/html-validator/lib/validate.js:15:23)
+    at self.callback (/home/eeguskiza/proyecto_web/node_modules/request/request.js:185:22)
+    at Request.emit (node:events:519:28)
+    at Request.<anonymous> (/home/eeguskiza/proyecto_web/node_modules/request/request.js:1154:10)
+    at Request.emit (node:events:519:28)
+    at IncomingMessage.<anonymous> (/home/eeguskiza/proyecto_web/node_modules/request/request.js:1076:12)
+    at Object.onceWrapper (node:events:633:28)
+    at IncomingMessage.emit (node:events:531:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+### templates/home.html
+Error: Validator returned unexpected statuscode: 429
+    at Request._callback (/home/eeguskiza/proyecto_web/node_modules/html-validator/lib/validate.js:15:23)
+    at self.callback (/home/eeguskiza/proyecto_web/node_modules/request/request.js:185:22)
+    at Request.emit (node:events:519:28)
+    at Request.<anonymous> (/home/eeguskiza/proyecto_web/node_modules/request/request.js:1154:10)
+    at Request.emit (node:events:519:28)
+    at IncomingMessage.<anonymous> (/home/eeguskiza/proyecto_web/node_modules/request/request.js:1076:12)
+    at Object.onceWrapper (node:events:633:28)
+    at IncomingMessage.emit (node:events:531:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+### templates/affiliations/detail.html
+Error: Validator returned unexpected statuscode: 429
+    at Request._callback (/home/eeguskiza/proyecto_web/node_modules/html-validator/lib/validate.js:15:23)
+    at self.callback (/home/eeguskiza/proyecto_web/node_modules/request/request.js:185:22)
+    at Request.emit (node:events:519:28)
+    at Request.<anonymous> (/home/eeguskiza/proyecto_web/node_modules/request/request.js:1154:10)
+    at Request.emit (node:events:519:28)
+    at IncomingMessage.<anonymous> (/home/eeguskiza/proyecto_web/node_modules/request/request.js:1076:12)
+    at Object.onceWrapper (node:events:633:28)
+    at IncomingMessage.emit (node:events:531:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+### templates/media/detail.html
+Error: Validator returned unexpected statuscode: 429
+    at Request._callback (/home/eeguskiza/proyecto_web/node_modules/html-validator/lib/validate.js:15:23)
+    at self.callback (/home/eeguskiza/proyecto_web/node_modules/request/request.js:185:22)
+    at Request.emit (node:events:519:28)
+    at Request.<anonymous> (/home/eeguskiza/proyecto_web/node_modules/request/request.js:1154:10)
+    at Request.emit (node:events:519:28)
+    at IncomingMessage.<anonymous> (/home/eeguskiza/proyecto_web/node_modules/request/request.js:1076:12)
+    at Object.onceWrapper (node:events:633:28)
+    at IncomingMessage.emit (node:events:531:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+### templates/media/list.html
+Error: Validator returned unexpected statuscode: 429
+    at Request._callback (/home/eeguskiza/proyecto_web/node_modules/html-validator/lib/validate.js:15:23)
+    at self.callback (/home/eeguskiza/proyecto_web/node_modules/request/request.js:185:22)
+    at Request.emit (node:events:519:28)
+    at Request.<anonymous> (/home/eeguskiza/proyecto_web/node_modules/request/request.js:1154:10)
+    at Request.emit (node:events:519:28)
+    at IncomingMessage.<anonymous> (/home/eeguskiza/proyecto_web/node_modules/request/request.js:1076:12)
+    at Object.onceWrapper (node:events:633:28)
+    at IncomingMessage.emit (node:events:531:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+### templates/planets/detail.html
+Error: Validator returned unexpected statuscode: 429
+    at Request._callback (/home/eeguskiza/proyecto_web/node_modules/html-validator/lib/validate.js:15:23)
+    at self.callback (/home/eeguskiza/proyecto_web/node_modules/request/request.js:185:22)
+    at Request.emit (node:events:519:28)
+    at Request.<anonymous> (/home/eeguskiza/proyecto_web/node_modules/request/request.js:1154:10)
+    at Request.emit (node:events:519:28)
+    at IncomingMessage.<anonymous> (/home/eeguskiza/proyecto_web/node_modules/request/request.js:1076:12)
+    at Object.onceWrapper (node:events:633:28)
+    at IncomingMessage.emit (node:events:531:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+### templates/planets/list.html
+Error: Validator returned unexpected statuscode: 429
+    at Request._callback (/home/eeguskiza/proyecto_web/node_modules/html-validator/lib/validate.js:15:23)
+    at self.callback (/home/eeguskiza/proyecto_web/node_modules/request/request.js:185:22)
+    at Request.emit (node:events:519:28)
+    at Request.<anonymous> (/home/eeguskiza/proyecto_web/node_modules/request/request.js:1154:10)
+    at Request.emit (node:events:519:28)
+    at IncomingMessage.<anonymous> (/home/eeguskiza/proyecto_web/node_modules/request/request.js:1076:12)
+    at Object.onceWrapper (node:events:633:28)
+    at IncomingMessage.emit (node:events:531:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+### templates/chat.html
+Error: Validator returned unexpected statuscode: 429
+    at Request._callback (/home/eeguskiza/proyecto_web/node_modules/html-validator/lib/validate.js:15:23)
+    at self.callback (/home/eeguskiza/proyecto_web/node_modules/request/request.js:185:22)
+    at Request.emit (node:events:519:28)
+    at Request.<anonymous> (/home/eeguskiza/proyecto_web/node_modules/request/request.js:1154:10)
+    at Request.emit (node:events:519:28)
+    at IncomingMessage.<anonymous> (/home/eeguskiza/proyecto_web/node_modules/request/request.js:1076:12)
+    at Object.onceWrapper (node:events:633:28)
+    at IncomingMessage.emit (node:events:531:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+### templates/errors/500.html
+Error: Validator returned unexpected statuscode: 429
+    at Request._callback (/home/eeguskiza/proyecto_web/node_modules/html-validator/lib/validate.js:15:23)
+    at self.callback (/home/eeguskiza/proyecto_web/node_modules/request/request.js:185:22)
+    at Request.emit (node:events:519:28)
+    at Request.<anonymous> (/home/eeguskiza/proyecto_web/node_modules/request/request.js:1154:10)
+    at Request.emit (node:events:519:28)
+    at IncomingMessage.<anonymous> (/home/eeguskiza/proyecto_web/node_modules/request/request.js:1076:12)
+    at Object.onceWrapper (node:events:633:28)
+    at IncomingMessage.emit (node:events:531:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+
+### templates/errors/404.html
+Error: Validator returned unexpected statuscode: 429
+    at Request._callback (/home/eeguskiza/proyecto_web/node_modules/html-validator/lib/validate.js:15:23)
+    at self.callback (/home/eeguskiza/proyecto_web/node_modules/request/request.js:185:22)
+    at Request.emit (node:events:519:28)
+    at Request.<anonymous> (/home/eeguskiza/proyecto_web/node_modules/request/request.js:1154:10)
+    at Request.emit (node:events:519:28)
+    at IncomingMessage.<anonymous> (/home/eeguskiza/proyecto_web/node_modules/request/request.js:1076:12)
+    at Object.onceWrapper (node:events:633:28)
+    at IncomingMessage.emit (node:events:531:35)
+    at endReadableNT (node:internal/streams/readable:1698:12)
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+

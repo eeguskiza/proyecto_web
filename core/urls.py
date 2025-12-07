@@ -1,20 +1,36 @@
 from django.urls import path
-from core.views import HomeView
-from . import views
+from django.views.decorators.cache import cache_page
+from core.views import (
+    HomeView,
+    MediaListView,
+    MediaDetailView,
+    CharacterListView,
+    CharacterDetailView,
+    SpeciesListView,
+    SpeciesDetailView,
+    PlanetsView,
+    PlanetDetailView,
+    AffiliationDetailView,
+    crear_personaje,
+    ChatPageView,
+    ChatBotSearchView,
+)
 
 
 urlpatterns = [
     path("", HomeView.as_view(), name="home"),
-    path("media/<int:media_id>/", views.media_detail, name="media_detail"),
-    path("media/", views.media_view, name="media"),
-    path("characters/", views.index_personajes, name="characters"),
-    path("characters/<int:personaje_id>/", views.detalle_personaje, name="detalle_personaje"),
-    path("personajes/", views.index_personajes, name="index_personajes"),
-    path("species/<int:species_id>/", views.species_detail, name="species_detail"),
-    path("species/", views.species_list, name="species_list"),
-    path("planets/", views.planets_view, name="planets"),
-    path("planets/<int:planet_id>/", views.planet_detail, name="planet_detail"),
-    path("affiliations/<int:affiliation_id>/", views.affiliation_detail, name="affiliation_detail"),
-    path("characters/crear/", views.crear_personaje, name="crear_personaje"),
+    path("chat/", ChatPageView.as_view(), name="chat"),
+    path("media/<int:media_id>/", cache_page(60 * 15)(MediaDetailView.as_view()), name="media_detail"),
+    path("media/", cache_page(60 * 15)(MediaListView.as_view()), name="media"),
+    path("characters/", CharacterListView.as_view(), name="characters"),
+    path("characters/<int:personaje_id>/", cache_page(60 * 15)(CharacterDetailView.as_view()), name="detalle_personaje"),
+    path("personajes/", CharacterListView.as_view(), name="index_personajes"),
+    path("species/<int:species_id>/", cache_page(60 * 15)(SpeciesDetailView.as_view()), name="species_detail"),
+    path("species/", cache_page(60 * 15)(SpeciesListView.as_view()), name="species_list"),
+    path("planets/", PlanetsView.as_view(), name="planets"),
+    path("planets/<int:planet_id>/", cache_page(60 * 15)(PlanetDetailView.as_view()), name="planet_detail"),
+    path("affiliations/<int:affiliation_id>/", cache_page(60 * 15)(AffiliationDetailView.as_view()), name="affiliation_detail"),
+    path("characters/crear/", crear_personaje, name="crear_personaje"),
+    path("chatbot/search/", ChatBotSearchView.as_view(), name="chatbot_search"),
     
 ]

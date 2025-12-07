@@ -1,0 +1,31 @@
+{% extends "index.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}{% trans "Chat – Star Wars Site" %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/chatbot.css' %}">
+<link rel="stylesheet" href="{% static 'css/chat_page.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="chat-page">
+  <div class="chat-hero">
+    <h1>{% trans "Asistente galáctico" %}</h1>
+    <p>{% trans "Pregunta por personajes o especies y te mostraré los datos de nuestra base." %}</p>
+  </div>
+
+  <div class="chatbot" data-endpoint="{% url 'chatbot_search' %}">
+    <div class="chat-log"></div>
+    <form class="chat-input">
+      <input type="search" name="q" placeholder="{% trans 'Ej: Quién es el maestro verde y pequeño...' %}" autocomplete="off">
+      <button type="submit">{% trans "Preguntar" %}</button>
+    </form>
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/chatbot.js' %}"></script>
+{% endblock %}

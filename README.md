@@ -76,13 +76,17 @@ proyecto_web/
 │       ├── 404.html
 │       └── 500.html
 ├── static/
-│   └── css/
-│       ├── base.css
-│       ├── home.css
-│       ├── characters.css
-│       ├── character_detail.css
-│       ├── media.css
-│       └── planets.css
+│   ├── css/
+│   │   ├── base.css
+│   │   ├── home.css
+│   │   ├── characters.css
+│   │   ├── character_detail.css
+│   │   ├── media.css
+│   │   ├── planets.css
+│   │   ├── chatbot.css
+│   │   └── chat_page.css
+│   └── js/
+│       └── chatbot.js
 ├── manage.py
 └── requirements.txt
 
@@ -122,6 +126,8 @@ Acceso al admin: `http://127.0.0.1:8000/admin`
 - `DJANGO_DEBUG`: `false` en producción.
 - `DJANGO_ALLOWED_HOSTS`: lista separada por comas de hosts/DOMINIOS permitidos.
 - `DJANGO_CSRF_TRUSTED_ORIGINS`: orígenes (con esquema) para CSRF en reversas/proxy.
+- `OPENAI_API_KEY`: clave para que el chatbot pueda usar GPT como fallback (opcional).
+- `OPENAI_MODEL`: modelo para el chatbot, por defecto `gpt-4o-mini`.
 - `LOAD_SWAPI_ENABLED`: ponlo a `false` si el entorno bloquea SWAPI y quieres que `load_data` no falle (seguirá cargando el JSON local y el CSV).
 
 Ejemplo:
@@ -130,6 +136,8 @@ export DJANGO_SECRET_KEY='cambia-esta-clave'
 export DJANGO_DEBUG=false
 export DJANGO_ALLOWED_HOSTS='midominio.com,www.midominio.com'
 export DJANGO_CSRF_TRUSTED_ORIGINS='https://midominio.com,https://www.midominio.com'
+export OPENAI_API_KEY='tu_clave_openai'          # opcional, para el chatbot
+export OPENAI_MODEL='gpt-4o-mini'                # opcional
 export LOAD_SWAPI_ENABLED=false  # opcional si SWAPI da 403 en CI/host
 python manage.py migrate
 python manage.py collectstatic --noinput  # STATIC_ROOT apunta a staticfiles/
@@ -137,6 +145,18 @@ python manage.py runserver 0.0.0.0:8000
 ```
 
 > Nota de seguridad: con `DJANGO_DEBUG=false` se activan automáticamente cookies seguras, HSTS, redirección a HTTPS y cabeceras de protección. El `.env` generado por el build es solo para desarrollo; ajusta los valores anteriores al desplegar.
+
+## ✅ Validación W3C (HTML/CSS)
+Instala las dependencias de validación (requiere `npm`):
+```bash
+npm install
+```
+Lanza los validadores oficiales y guarda los logs en `logs/w3c-html.log` y `logs/w3c-css.log`:
+```bash
+npm run validate:w3c
+```
+Usa estos logs para revisar y corregir cualquier incidencia de HTML/CSS reportada.
+- Nota: el validador HTML se ejecuta sobre las plantillas Django sin renderizar, por lo que verás falsos positivos (doctype ausente, rutas `{% static %}`, atributos con `{% if %}`, etc.). Para una validación real, valida el HTML renderizado en runtime. El log CSS señala avisos de pseudo-elementos de vendor y la propiedad `clip` deprecada; revisa si quieres ajustarlos.
 
 
 ## 🧰 Comandos de datos
@@ -151,21 +171,10 @@ python manage.py runserver 0.0.0.0:8000
 * Las imágenes **no se descargan**: se usan las URLs remotas de akabab (`image_url`).
 * Si SWAPI difiere en algún nombre y no enlaza, el comando lo avisa en consola.
 * La tercera etapa (`load_data` sin `--skip-swapi`) requiere conexión a Internet para consultar el mirror de SWAPI.
+* El chatbot de la página `/chat` primero busca en tu BD; si no encuentra nada y defines `OPENAI_API_KEY`, usa GPT como fallback. Los enlaces “Ver más” llevan a las fichas internas de personajes o películas.
+* i18n activo (es/en) con selector de idioma en el layout; los textos principales están marcados con `{% trans %}`.
 
 ## Créditos
 
 * Datos: [akabab/starwars-api](https://github.com/akabab/starwars-api) y [SWAPI](https://swapi.py4e.com/)
 * Autores: **Erik Eguskiza**, **Alexander Jauregui**, **Jon Velasco** y **Alex Ribera**
-
-## CONVERTIRTE EN EDITOR
-* python manage.py createsuperuser (si esto lo has hecho ya esta)
-* desde el shell:
-from django.contrib.auth.models import User
-usuario = User.objects.get(username='juan')
-usuario.is_staff = True        # Acceso al admin
-usuario.is_superuser = True    # Permisos totales
-usuario.save()
-luego runserver te metes en el admin inicias sesion con el user name q has creado y te metes en el normal
-
-## traductor
-Implementé i18n: añadí idiomas y LocaleMiddleware, envolví las URLs con i18n_patterns, puse selector de idioma en el layout y marqué los textos principales con {% trans %}/{% blocktrans %}. Generé las traducciones a inglés en locale/en/ y compilé el .mo, así que al cambiar de idioma desde el selector se sirven los textos traducidos.
