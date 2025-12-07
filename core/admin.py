@@ -30,16 +30,15 @@ class CharacterAdmin(admin.ModelAdmin):
     list_filter = ("species", "homeworld")
     search_fields = ("name", "species__name", "homeworld__name")
     
-    # Campos calculados o relaciones ManyToMany
+    # Muestra las afiliaciones como texto plano en el listado.
     def display_affiliations(self, obj):
         return ", ".join([a.name for a in obj.affiliations.all()])
     display_affiliations.short_description = "Affiliations"
     
-    # Control de permisos: ocultar columnas para usuarios no superuser
+    # Para usuarios no admin quitamos la columna extra de afiliaciones.
     def get_list_display(self, request):
         columns = list(self.list_display)
         if not request.user.is_superuser:
-            # quitar columna que solo admins pueden ver
             columns.remove("display_affiliations")
         return columns
 

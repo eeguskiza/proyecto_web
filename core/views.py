@@ -11,7 +11,7 @@ from .forms import PlanetInquiryForm, CharacterForm
 @login_required
 @permission_required('core.add_character', raise_exception=True)
 def crear_personaje(request):
-    # NOTA: NO cacheamos esta vista porque contiene un formulario POST y validación CSRF.
+    """Formulario simple para dar de alta personajes desde la web."""
     if request.method == "POST":
         form = CharacterForm(request.POST, request.FILES)
         if form.is_valid():
@@ -27,10 +27,12 @@ class HomeView(TemplateView):
     template_name = "home.html"
 
     def get_context_data(self, **kwargs):
+        """Monta el escaparate de la home con el personaje más alto de cada especie."""
         context = super().get_context_data(**kwargs)
         featured = []
 
         for s in Species.objects.all():
+            # Para cada especie pillamos el personaje con foto y mayor altura.
             tallest = (
                 Character.objects
                 .filter(
@@ -54,6 +56,7 @@ class HomeView(TemplateView):
    
 @cache_page(60 * 15)
 def media_view(request):
+    """Listado de pelis/series con carteles alternando imágenes locales."""
     films = Media.objects.filter(media_type=Media.FILM).order_by("episode")
     poster_pool = [f"img/{i}.jpg" for i in range(1, 8)]
 
@@ -64,8 +67,9 @@ def media_view(request):
     return render(request, "media/list.html", {"films": films})
 
 
-@cache_page(60 * 15) # Añadido caché
+@cache_page(60 * 15)
 def media_detail(request, media_id: int):
+    """Detalle de una película con su reparto precargado."""
     character_qs = Character.objects.select_related("species").order_by("name")
     film = get_object_or_404(
         Media.objects.prefetch_related(Prefetch("cast", queryset=character_qs)),
@@ -89,8 +93,9 @@ def handler_500(request, template_name="errors/500.html"):
     return render(request, template_name, status=500)
 
 
-@cache_page(60 * 15) # Añadido caché
+@cache_page(60 * 15)
 def detalle_personaje(request, personaje_id):
+    """Ficha de un personaje con enlaces a su especie, planeta y filmografía."""
     personaje = get_object_or_404(
         Character.objects.select_related("species", "homeworld").prefetch_related("films_and_series", "affiliations"),
         id=personaje_id,
@@ -99,8 +104,8 @@ def detalle_personaje(request, personaje_id):
     return render(request, "characters/detail.html", {"personaje": personaje, "films": films})
 
 
-@cache_page(60 * 15) # Añadido caché (Django cachea automáticamente según los filtros de búsqueda URL)
 def index_personajes(request):
+    """Buscador con filtros de texto, especie y película (sin caché: depende de permisos)."""
     filters = {
         "q": request.GET.get("q", "").strip(),
         "species": request.GET.get("species", "").strip(),
@@ -147,8 +152,9 @@ def index_personajes(request):
     )
 
 
-@cache_page(60 * 15) # Añadido caché
+@cache_page(60 * 15)
 def species_list(request):
+    """Especies ordenadas que tengan al menos un personaje asociado."""
     species = (
         Species.objects.filter(character__isnull=False)
         .annotate(character_count=Count("character", distinct=True))
@@ -157,8 +163,9 @@ def species_list(request):
     return render(request, "species/list.html", {"species_list": species})
 
 
-@cache_page(60 * 15) # Añadido caché
+@cache_page(60 * 15)
 def species_detail(request, species_id):
+    """Detalle de especie y sus personajes residentes."""
     especie = get_object_or_404(Species, pk=species_id)
     characters = (
         Character.objects.select_related("homeworld")
@@ -177,7 +184,7 @@ def species_detail(request, species_id):
 
 
 def planets_view(request):
-    # NOTA: NO cacheamos esta vista porque tiene un formulario de contacto (PlanetInquiryForm).
+    """Listado de planetas y formulario de contacto. Sin caché para no romper el POST."""
     inquiry_form = PlanetInquiryForm()
     form_success = False
 
@@ -212,6 +219,7 @@ def planets_view(request):
     bad_values = {"unknown", "desconocido", "none", "n/a", "null", "0", ""}
    
     def imperial_phrase(field):
+        # Mensajes temáticos para campos con datos pobres de SWAPI.
         phrases = {
             "climate": "Condición atmosférica clasificada.",
             "terrain": "Superficie bajo censura imperial.",
@@ -285,6 +293,7 @@ def planets_view(request):
 
 @cache_page(60 * 15)
 def planet_detail(request, planet_id: int):
+    """Ficha de planeta con fauna y residentes humanos/alienígenas."""
     planet = get_object_or_404(
         Planet.objects.select_related("star_system"),
         pk=planet_id,
@@ -312,6 +321,7 @@ def planet_detail(request, planet_id: int):
 
 @cache_page(60 * 15)
 def affiliation_detail(request, affiliation_id: int):
+    """Listado de miembros de una afiliación concreta."""
     affiliation = get_object_or_404(Affiliation, pk=affiliation_id)
     members = (
         Character.objects.filter(affiliations=affiliation)

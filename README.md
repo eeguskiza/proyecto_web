@@ -92,34 +92,49 @@ proyecto_web/
 - Python 3.11+ (desarrollado con 3.12)
 - `pip`, `venv`
 
-## ⚙️ Puesta en marcha 
+## ⚙️ Puesta en marcha (3 pasos)
 ### 1) Crear y activar entorno
 ```bash
 python -m venv .venv
 source .venv/bin/activate  # Windows: .venv\Scripts\Activate.ps1
 ````
-### 2) Instalar dependencias
+### 2) Build 
 ```bash
-pip install -r requirements.txt
-````
-### 3) Migraciones
-```bash
-python manage.py migrate
-````
-### 4) Usuario admin
-```bash
-python manage.py createsuperuser
-````
-### 5) Cargar y enriquecer datos
-```bash
-python manage.py load_data
-````
-### 6) Levantar servidor
+python scripts/build.py
+```
+Qué hace `scripts/build.py`:
+- Genera un `.env` local con `DJANGO_SECRET_KEY` aleatoria (solo si no existe).
+- Instala dependencias de `requirements.txt` (idempotente).
+- Aplica migraciones.
+- Carga datos de akabab + planetas + SWAPI si la base está vacía.
+
+### 3) Levantar servidor
 ```bash
 python manage.py runserver
 ````
 
 Acceso al admin: `http://127.0.0.1:8000/admin`
+
+> Para crear un superusuario: `python manage.py createsuperuser`
+
+### Variables para despliegue (producción)
+- `DJANGO_SECRET_KEY`: clave secreta robusta (requerida en prod).
+- `DJANGO_DEBUG`: `false` en producción.
+- `DJANGO_ALLOWED_HOSTS`: lista separada por comas de hosts/DOMINIOS permitidos.
+- `DJANGO_CSRF_TRUSTED_ORIGINS`: orígenes (con esquema) para CSRF en reversas/proxy.
+
+Ejemplo:
+```bash
+export DJANGO_SECRET_KEY='cambia-esta-clave'
+export DJANGO_DEBUG=false
+export DJANGO_ALLOWED_HOSTS='midominio.com,www.midominio.com'
+export DJANGO_CSRF_TRUSTED_ORIGINS='https://midominio.com,https://www.midominio.com'
+python manage.py collectstatic --noinput  # si usas almacenamiento estático
+python manage.py migrate
+python manage.py runserver 0.0.0.0:8000
+```
+
+> Nota de seguridad: con `DJANGO_DEBUG=false` se activan automáticamente cookies seguras, HSTS, redirección a HTTPS y cabeceras de protección. El `.env` generado por el build es solo para desarrollo; ajusta los valores anteriores al desplegar.
 
 
 ## 🧰 Comandos de datos

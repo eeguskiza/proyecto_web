@@ -10,7 +10,6 @@ urlpatterns = [
     path("characters/", views.index_personajes, name="characters"),
     path("characters/<int:personaje_id>/", views.detalle_personaje, name="detalle_personaje"),
     path("personajes/", views.index_personajes, name="index_personajes"),
-    path("personaje/<int:personaje_id>/", views.detalle_personaje, name="detalle_personaje"),
     path("species/<int:species_id>/", views.species_detail, name="species_detail"),
     path("species/", views.species_list, name="species_list"),
     path("planets/", views.planets_view, name="planets"),

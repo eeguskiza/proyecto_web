@@ -1,4 +1,4 @@
-/* ====== Estilos base compartidos ====== */
+/* Estilos base que comparten todas las páginas */
 body {
     font-family: 'Segoe UI', sans-serif;
     background: radial-gradient(circle at 50% 20%, #0a0a0f, #000);
@@ -8,10 +8,10 @@ body {
 }
 
 header {
-    /* IMPORTANTE: Crea el marco de referencia para las banderas */
+    /* Posición relativa para poder colocar el selector de idioma dentro */
     position: relative;
     background: rgba(10, 10, 15, 0.9);
-    padding: 24px 0; /* Fíjate en este 24px */
+    padding: 24px 0; /* El selector de idioma se alinea con este padding */
     border-bottom: 1px solid #222;
     display: flex;
     flex-direction: column;
@@ -75,7 +75,7 @@ a:focus {
     color: #ffe81f;
 }
 
-/* ====== Utilidades ====== */
+/* Utilidades de accesibilidad */
 .sr-only {
     position: absolute;
     width: 1px;
@@ -87,17 +87,14 @@ a:focus {
     border: 0;
 }
 
-/* ====== SELECTOR DE IDIOMA (BANDERAS) ====== */
+/* Selector de idioma con banderas en el header */
 .language-switcher {
     position: absolute;
     
-    /* ALINEACIÓN VERTICAL:
-       bottom: 24px coincide con el padding-bottom del header.
-       Esto asegura que las banderas estén en la misma línea base que el menú. */
+    /* Se apoya sobre el borde inferior del header para alinearse con el menú */
     bottom: 24px;
     
-    /* ALINEACIÓN HORIZONTAL:
-       Pegado a la derecha, respetando el mismo margen que tiene el contenido principal (5vw) */
+    /* Respeta el margen horizontal general del contenido */
     right: 5vw;
     
     display: flex;
@@ -105,7 +102,7 @@ a:focus {
     z-index: 2000;
 }
 
-/* Botón transparente */
+/* Botón sin borde para mostrar solo la bandera */
 .lang-btn {
     background: transparent !important;
     border: none !important;
@@ -119,34 +116,34 @@ a:focus {
     justify-content: center;
 }
 
-/* Estilo de las imágenes (usando las de flagcdn) */
+/* Ajustes del tamaño de las banderas */
 .lang-img {
-    width: 32px;  /* Tamaño de la bandera */
+    width: 32px;  /* Tamaño visible de la bandera */
     height: auto;
     display: block;
     border-radius: 3px;
-    /* Sombra suave para que resalte sobre el negro */
+    /* Sombra suave para que resalte sobre el fondo oscuro */
     box-shadow: 0 2px 4px rgba(0,0,0,0.6);
 }
 
-/* Interacción Hover */
+/* Interacción al pasar el ratón */
 .lang-btn:hover {
     transform: scale(1.15);
     opacity: 1;
 }
 
-/* Estado Activo (Idioma seleccionado) */
+/* Estado activo cuando el idioma ya está seleccionado */
 .lang-btn.active {
     opacity: 1;
     transform: scale(1.1);
-    /* Brillo amarillo alrededor de la bandera activa */
+    /* Pequeño brillo para señalar el idioma elegido */
     filter: drop-shadow(0 0 5px rgba(255, 232, 31, 0.7)); 
 }
 
-/* RESPONSIVE: En móviles bajamos las banderas */
+/* En móviles el selector baja y se centra */
 @media (max-width: 768px) {
     .language-switcher {
-        position: static; /* Ya no flota */
+        position: static; /* Deja de flotar para no tapar el contenido */
         margin-top: 15px;
         justify-content: center;
     }

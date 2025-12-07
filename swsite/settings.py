@@ -23,6 +23,23 @@ from django.utils.translation import gettext_lazy as _
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+def load_dotenv(path: Path):
+    """Carga variables desde un .env plano (KEY=VALUE), sin dependencias extras."""
+    if not path.exists():
+        return
+    for line in path.read_text().splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        key, value = key.strip(), value.strip().strip('"').strip("'")
+        os.environ.setdefault(key, value)
+
+
+# Carga .env local antes de leer variables de entorno.
+load_dotenv(BASE_DIR / ".env")
+
+
 INTERNAL_IPS = [
     "127.0.0.1",
     "localhost",
@@ -30,22 +47,23 @@ INTERNAL_IPS = [
 
 
 
-
-
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-)yc@2e3oc2jfhes6x$o3(e&+jgj5ko93+85fm95)ap6=bfd)4*'
+# Seguridad: valores cargados desde variables de entorno en despliegue.
+SECRET_KEY = os.getenv(
+    "DJANGO_SECRET_KEY",
+    "insecure-dev-key-cambia-esto-en-produccion",
+)
 
+# DEBUG solo debe estar activo en local. Usa DJANGO_DEBUG=false en prod.
+DEBUG = os.getenv("DJANGO_DEBUG", "true").lower() == "true"
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+# Hosts permitidos desde variable de entorno (coma separada) o los comunes en local.
+ALLOWED_HOSTS = [
+    host.strip() for host in os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",") if host.strip()
+]
 
 
 
@@ -194,26 +212,24 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Seguridad y cabeceras
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
+CSRF_TRUSTED_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",")
+    if origin.strip()
+]
+SECURE_REFERRER_POLICY = "strict-origin-when-cross-origin"
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+
 if not DEBUG:
-    # 1. Redirección SSL
-    # Redirige todas las peticiones HTTP a HTTPS automáticamente.
+    # Redirección SSL + HSTS en producción
     SECURE_SSL_REDIRECT = True
-
-    # 2. Cookies Seguras
-    # Evita que las cookies de sesión y CSRF se envíen por conexiones no seguras (HTTP).
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-
-    # 3. HSTS (HTTP Strict Transport Security)
-    # Avisa al navegador que, durante el tiempo definido, solo conecte por HTTPS.
-    # Recomendado: 31536000 segundos (1 año).
     SECURE_HSTS_SECONDS = 31536000
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
-
-    # 4. Proxy (SOLO SI ES NECESARIO)
-    # Si usas un proxy inverso (Nginx, Load Balancer) que maneja el SSL, descomenta esto.
-    # La doc advierte que debes entender bien tu configuración antes de activarlo.
+    # Si usas proxy inverso que termina TLS, descomenta:
     # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-    
-X_FRAME_OPTIONS = 'DENY'
